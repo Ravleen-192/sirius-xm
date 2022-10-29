@@ -4,7 +4,39 @@ import React, { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Paragraph, Span } from '../Typography';
 import MatxVerticalNavExpansionPanel from './MatxVerticalNavExpansionPanel';
+import {  IconButton } from '@mui/material';
+import {  useTheme } from '@mui/system';
+import { topBarHeight } from 'app/utils/constant';
 
+
+const FilterContainer = styled('div')(({ theme }) => ({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  zIndex: 9,
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  height: topBarHeight,
+  background: theme.palette.primary.main,
+  color: theme.palette.text.primary,
+  '&::placeholder': {
+    color: theme.palette.text.primary,
+  },
+}));
+
+const FilterInput = styled('input')(({ theme }) => ({
+  width: '100%',
+  border: 'none',
+  outline: 'none',
+  fontSize: '1rem',
+  paddingLeft: '20px',
+  height: '50px',
+  alignItems:'left',
+  background: theme.palette.primary.main,
+  color: theme.palette.text.primary,
+  '&::placeholder': { color: theme.palette.text.primary },
+}));
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   fontSize: '12px',
   marginTop: '20px',
@@ -81,7 +113,8 @@ const BadgeValue = styled('div')(() => ({
 const MatxVerticalNav = ({ items }) => {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
-
+  const { palette } = useTheme();
+  const textColor = palette.text.primary;
   const renderLevels = (data) => {
     return data.map((item, index) => {
       if (item.type === 'label')
@@ -90,7 +123,14 @@ const MatxVerticalNav = ({ items }) => {
             {item.label}
           </ListLabel>
         );
-
+        if (item.type === 'filter')
+      return (<FilterContainer key={index}  sx={{ height:50, }}>
+        <IconButton  sx={{ mx: 2, verticalAlign: 'middle' }}>
+          <Icon sx={{ color: textColor }}>filter_list</Icon>
+        </IconButton>
+        <FilterInput type="text" placeholder="Filter navigator" autoFocus />
+        
+      </FilterContainer>);
       if (item.children) {
         return (
           <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>

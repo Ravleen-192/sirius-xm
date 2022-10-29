@@ -1,5 +1,5 @@
 export const navigations = [
-  { name: 'Filter navigator', path: '/dashboard/default', icon: 'filter_list' },
+  { label: 'Filter navigator',  icon: 'filter_list', type:'filter' },
   { name: 'Home', path: '/dashboard/default', icon: 'dashboard' },
   { label: 'PAGES', type: 'label' },
   {
