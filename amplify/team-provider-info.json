@@ -1,0 +1,23 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-siriusxm-dev-100436-authRole",
+            "UnauthRoleArn": "arn:aws:iam::211544418920:role/amplify-siriusxm-dev-100436-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::211544418920:role/amplify-siriusxm-dev-100436-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-siriusxm-dev-100436-deployment",
+            "UnauthRoleName": "amplify-siriusxm-dev-100436-unauthRole",
+            "StackName": "amplify-siriusxm-dev-100436",
+            "StackId": "arn:aws:cloudformation:us-west-2:211544418920:stack/amplify-siriusxm-dev-100436/22b2c540-5743-11ed-9da9-064a62950bbb",
+            "AmplifyAppId": "d1zroh8qix1cic"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d1zroh8qix1cic",
+                    "type": "cicd"
+                }
+            }
+        }
+    }
+}
