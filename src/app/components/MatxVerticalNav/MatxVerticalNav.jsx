@@ -4,22 +4,7 @@ import React, { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Paragraph, Span } from '../Typography';
 import MatxVerticalNavExpansionPanel from './MatxVerticalNavExpansionPanel';
-import {  IconButton } from '@mui/material';
-import {  useTheme } from '@mui/system';
 
-const FilterInput = styled('input')(({ theme }) => ({
-  width: '100%',
-  border: 'none',
-  outline: 'none',
-  fontSize: '1rem',
-  paddingLeft: '20px',
-  marginBottom: '2px',
-  height: '40px',
-  alignItems:'left',
-  background: theme.palette.primary.main,
-  color: theme.palette.text.primary,
-  '&::placeholder': { color: theme.palette.text.primary },
-}));
 const ListLabel = styled(Paragraph)(({ theme, mode }) => ({
   fontSize: '12px',
   marginTop: '20px',
@@ -93,26 +78,19 @@ const BadgeValue = styled('div')(() => ({
   borderRadius: '300px',
 }));
 
-const MatxVerticalNav = ({ items }) => {
+const MatxVerticalNav = ({ items ,query }) => {
   const { settings } = useSettings();
   const { mode } = settings.layout1Settings.leftSidebar;
-  const { palette } = useTheme();
-  const textColor = palette.text.primary;
-  console.log(items);
-  const renderLevels = (data) => {
-    return data.map((item, index) => {
+  
+  const renderLevels = (items) => {
+    return items.filter(item=>item.name.toLowerCase().includes(query)).map((item, index) => {
       if (item.type === 'label')
         return (
           <ListLabel key={index} mode={mode} className="sidenavHoverShow">
             {item.label}
           </ListLabel>
         );
-        if (item.type === 'filter')
-      return (<ButtonBase key={index}  sx={{ height:50,  marginLeft: '15px' }}>
-         <Icon sx={{ color: textColor }}>filter_list</Icon>
-        <FilterInput type="text" placeholder="Filter navigator" autoFocus />
-        
-      </ButtonBase>);
+       
       if (item.children) {
         return (
           <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>
