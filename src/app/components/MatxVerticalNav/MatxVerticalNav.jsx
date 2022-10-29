@@ -6,24 +6,6 @@ import { Paragraph, Span } from '../Typography';
 import MatxVerticalNavExpansionPanel from './MatxVerticalNavExpansionPanel';
 import {  IconButton } from '@mui/material';
 import {  useTheme } from '@mui/system';
-import { topBarHeight } from 'app/utils/constant';
-
-
-const FilterContainer = styled('div')(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  zIndex: 9,
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  height: topBarHeight,
-  background: theme.palette.primary.main,
-  color: theme.palette.text.primary,
-  '&::placeholder': {
-    color: theme.palette.text.primary,
-  },
-}));
 
 const FilterInput = styled('input')(({ theme }) => ({
   width: '100%',
@@ -31,7 +13,8 @@ const FilterInput = styled('input')(({ theme }) => ({
   outline: 'none',
   fontSize: '1rem',
   paddingLeft: '20px',
-  height: '50px',
+  marginBottom: '2px',
+  height: '40px',
   alignItems:'left',
   background: theme.palette.primary.main,
   color: theme.palette.text.primary,
@@ -54,7 +37,7 @@ const ExtAndIntCommon = {
   borderRadius: '4px',
   height: 44,
   whiteSpace: 'pre',
-  marginBottom: '2px',
+  marginBottom: '4px',
   textDecoration: 'none',
   justifyContent: 'space-between',
   transition: 'all 150ms ease-in',
@@ -115,6 +98,7 @@ const MatxVerticalNav = ({ items }) => {
   const { mode } = settings.layout1Settings.leftSidebar;
   const { palette } = useTheme();
   const textColor = palette.text.primary;
+  console.log(items);
   const renderLevels = (data) => {
     return data.map((item, index) => {
       if (item.type === 'label')
@@ -124,13 +108,11 @@ const MatxVerticalNav = ({ items }) => {
           </ListLabel>
         );
         if (item.type === 'filter')
-      return (<FilterContainer key={index}  sx={{ height:50, }}>
-        <IconButton  sx={{ mx: 2, verticalAlign: 'middle' }}>
-          <Icon sx={{ color: textColor }}>filter_list</Icon>
-        </IconButton>
+      return (<ButtonBase key={index}  sx={{ height:50,  marginLeft: '15px' }}>
+         <Icon sx={{ color: textColor }}>filter_list</Icon>
         <FilterInput type="text" placeholder="Filter navigator" autoFocus />
         
-      </FilterContainer>);
+      </ButtonBase>);
       if (item.children) {
         return (
           <MatxVerticalNavExpansionPanel mode={mode} item={item} key={index}>

@@ -43,6 +43,7 @@ const SidebarNavRoot = styled(Box)(({ theme, width, primaryBg, bgImgURL }) => ({
 
 const NavListBox = styled(Box)(() => ({
   height: '100%',
+  top:'50px',
   display: 'flex',
   flexDirection: 'column',
 }));
