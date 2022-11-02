@@ -17,8 +17,8 @@ export const navigations = [
     icon: 'launch',
     /*badge: { value: '30+', color: 'secondary' },*/
     children: [
-      { name: 'Pipeline', path: '/material/autocomplete', iconText: 'A' },
-      { name: 'Process', path: '/material/buttons', iconText: 'B' },
+      { name: 'Pipeline', path:'/pipelinemgmt/default', iconText: 'A' },
+      { name: 'Process', path: '/material/expansion-panel', iconText: 'B' },
       { name: 'Process Step', path: '/material/checkbox', iconText: 'C' },
 
     ],
@@ -35,7 +35,7 @@ export const navigations = [
     icon: 'hdr_strong',
     children: [
 
-      { name: 'Source Level', path: '/charts/echarts', iconText: 'S' },
+      { name: 'Source Level', path: '/datalineage/default', iconText: 'S' },
 
       { name: 'Table Level', path: '/material/table', iconText: 'T' },
     ],
