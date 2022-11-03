@@ -4,8 +4,8 @@ import { Fragment } from 'react';
 import RowCards from './shared/RowCards';
 import StatCards from './shared/StatCards';
 import StatCards2 from './shared/StatCards2';
-import ControlledAccordion from './shared/ControlledAccordion';
-import TopSellingTable from './shared/TopSellingTable';
+
+import Pipelinetable from './shared/Pipelinetable';
 
 
 const ContentBox = styled('div')(({ theme }) => ({
@@ -44,8 +44,8 @@ const Playout = () => {
             
           <StatCards2 />
           <StatCards />
-            <TopSellingTable />
-          
+            <Pipelinetable />
+            
           </Grid>
 
          
