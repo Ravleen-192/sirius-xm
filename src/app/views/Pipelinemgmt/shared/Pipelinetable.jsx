@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { Paragraph } from 'app/components/Typography';
 import React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
 import PipelineDetail from './pipelineDetail';
 
 const CardHeader = styled(Box)(() => ({
@@ -66,210 +66,213 @@ const Pipelinetable = () => {
   const bgError = palette.error.main;
   const bgPrimary = palette.primary.main;
   const bgSecondary = palette.secondary.main;
-  const toggleActive =(i) =>{
-    
-    if (i === isActive) 
-      setActive(null);
-    else setActive(i);
-    
-  };
-  const showDetail = (product,productid, i) => {
-     
-    if (i === isActive) 
-      setActive(null);
-    else setActive(i);
-    setprodsel({productid});
-    setprod({product});
+  const toggleActive = (i) => {
 
-    };
+    if (i === isActive)
+      setActive(null);
+    else setActive(i);
+
+  };
+  const showDetail = (product, productid, i) => {
+
+    if (i === isActive)
+      setActive(null);
+    else setActive(i);
+    setprodsel({ productid });
+    setprod({ product });
+
+  };
   return (
     <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
       <Box overflow="auto">
         <ProductTable>
-         
+
           <TableBody>
-          {productList.map((product, nkey) => {
-            console.log("product.id")
-            console.log(product.id)
-            console.log("isActive")
-            console.log(isActive)
-            return <TableRow key={product.id} hover selected style={
-              isActive === product.id? { background: 'rgba(9, 182, 109, 0.15)' } : null}   onClick={() =>showDetail(product.processes, product.id, product.id)}>
-              <TableCell key={product.id} align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
-                      {product.id}
-                    </TableCell>
-                 {product.processes.map((process, index) => {
-                 
-                 
-                        return (<><TableCell key={process.id} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+            {productList.map((product, nkey) => {
+              console.log("product.id")
+              console.log(product.id)
+              console.log("isActive")
+              console.log(isActive)
+              return (<> <TableRow key={product.id} hover selected style={
+                isActive === product.id ? { background: 'rgba(9, 182, 109, 0.15)' } : null} onClick={() => showDetail(product.processes, product.id, product.id)}>
+                <TableCell key={product.id} align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
+                  {product.id}
+                </TableCell>
+                {product.processes.map((process, index) => {
+
+
+                  return (
+                    <>
+                      <TableCell key={process.id} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
                         <Avatar src={product.processes[index].icon} />
-                        </TableCell>
-    
-                        <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
-                          <Box display="flex" alignItems="left">
-                            
-                            <Paragraph>{product.processes[index].desc}</Paragraph>
-                            
-                          </Box>
-                        </TableCell>
-    
-                        <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                      </TableCell>
+
+                      <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
+                        <Box display="flex" alignItems="left">
+
+                          <Paragraph>{product.processes[index].desc}</Paragraph>
+
+                        </Box>
+                      </TableCell>
+
+                      <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
                         <Avatar src={product.processes[index].status} />
-                        </TableCell>
-                        </>
-                        );
-                   })}
-                   
-                   <TableCell sx={{ px: 0,  justifyContent:'left' }} colSpan={1}>
-                      <IconButton>
-                      {isActive === product.id?
-                      <Icon color="primary">expand_less</Icon>:
+                      </TableCell>
+                    </>
+                  );
+                })}
+
+                <TableCell sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
+                  <IconButton>
+                    {isActive === product.id ?
+                      <Icon color="primary">expand_less</Icon> :
                       <Icon color="primary">expand_more</Icon>}
-                      </IconButton>
-                  </TableCell>
-              </TableRow>;
-          })}
-           
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+                {
+
+                  (prodsel !== '' && isActive === product.id) ?
+
+                    <TableRow >
+                      <TableCell sx={{ px: 0, justifyContent: 'center', backgroundColor: 'rgba(9, 182, 109, 0.15)' }} colSpan={36}>
+                        <PipelineDetail productList={prod} productid={prodsel} /></TableCell></TableRow>
+                    : null
+                }
+              </>);
+
+
+            })}
+
           </TableBody>
         </ProductTable>
       </Box>
-      {
-  
-        (prodsel !== '')?
-        <Box>
-        <PipelineDetail productList={prod} productid = {prodsel}/></Box>:null
-        
-      }
+
     </Card>
   );
 };
 
-
-
-
 const productList = [
- { 
-  "id": "#4933",
-  "processes": [
-    {
-      "id": "#4933p1",
-      "status":"/assets/images/awsicons/greenarr.jpg",
-      "icon":"/assets/images/awsicons/Onprem.png",
-      "desc": "On-prem to S3",
-      "steps": [
-                 
-            { "id": "#4933p1s1", "name": "AgglomerativeCluster", "desc": "{INSERT INTO table_name (column1, column2}", "icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/greenarr.jpg", },
-            { "id": "#4933p1s2", "name": "CommunityStructure", "desc": "{UPDATE table_name SET column1}","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg", },
-            { "id": "#4933p1s3", "name": "HierarchicalCluster", "desc": "INSERT INTO table_name (column1, column2}","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/greenarr.jpg", },
-            { "id": "#4933p1s4", "name": "MergeEdge", "desc": "INSERT INTO table_name (column1, column2}","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg",  }
-          ],
+  {
+    "id": "#4933",
+    "processes": [
+      {
+        "id": "#4933p1",
+        "status": "/assets/images/awsicons/greenarr.jpg",
+        "icon": "/assets/images/awsicons/Onprem.png",
+        "desc": "On-prem to S3",
+        "steps": [
+
+          { "id": "#4933p1s1", "name": "Trigger job to move/copy to S3 ", "desc": "{INSERT INTO table_name (column1, column2}", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/greenarr.jpg", },
+          { "id": "#4933p1s2", "name": "for push - N/A, e.g. cron copies from STFP to S3", "desc": "{UPDATE table_name SET column1}", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#4933p1s3", "name": "N/A - will leverage Storage Gateway", "desc": "N/A - will leverage Storage Gateway", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/greenarr.jpg", },
+          { "id": "#4933p1s4", "name": "On-prem DAtabase to AWS Redshift Replication", "desc": "INSERT INTO table_name (column1, column2}", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", }
+        ],
       },
       {
         "id": "#4933p2",
-        "status":"/assets/images/awsicons/redarr.jpg",
-        "icon":"/assets/images/awsicons/s3.png",
-        "desc": "S3 to Redshift source raw",
+        "status": "/assets/images/awsicons/redarr.jpg",
+        "icon": "/assets/images/awsicons/s3.png",
+        "desc": "S3 to Redshift Source-raw",
         "steps": [
-                   
-          { "id": "#4933p2s1", "name": "AgglomerativeCluster", "desc": "INSERT INTO table_name (column1, column2}","icon":"/assets/images/awsicons/s3.png","status":"/assets/images/awsicons/redarr.jpg",  },
-          { "id": "#4933p2s2", "name": "CommunityStructure", "desc": "INSERT INTO table_name (column1, column2}","icon":"/assets/images/awsicons/s3.png","status":"/assets/images/awsicons/greenarr.jpg",  },
-          { "id": "#4933p2s3", "name": "HierarchicalCluster", "desc": "INSERT INTO table_name (column1, column2}","icon":"/assets/images/awsicons/s3.png" ,"status":"/assets/images/awsicons/greenarr.jpg", },
-          { "id": "#4933p2s4", "name": "MergeEdge", "desc": "INSERT INTO table_name (column1, column2}","icon":"/assets/images/awsicons/s3.png","status":"/assets/images/awsicons/redarr.jpg",  }
-            ],
-        },
-        {
-          "id": "#4933p3",
-          "status":"/assets/images/awsicons/greenarr.jpg",
-          "icon":"/assets/images/awsicons/redshift.png",
-          "desc": "Redshift to Curated",
-          "steps": [
-                     
-            { "id": "#4933p3s1", "name": "AgglomerativeCluster", "desc": "3938","icon":"/assets/images/awsicons/redshift.png","status":"/assets/images/awsicons/redarr.jpg",  },
-            { "id": "#4933p3s2", "name": "CommunityStructure", "desc": "3812","icon":"/assets/images/awsicons/redshift.png","status":"/assets/images/awsicons/redarr.jpg",  },
-            { "id": "#4933p3s3", "name": "HierarchicalCluster", "desc": "6714","icon":"/assets/images/awsicons/redshift.png","status":"/assets/images/awsicons/redarr.jpg",  },
-            { "id": "#4933p3s4", "name": "MergeEdge", "desc": "743", "icon":"/assets/images/awsicons/redshift.png","status":"/assets/images/awsicons/redarr.jpg",  }
-              ],
-          },
-          {
-            "id": "#4933p4",
-            "status":"/assets/images/awsicons/greenarr.jpg",
-            "icon":"/assets/images/awsicons/Analytics.png",
-            "desc": "Curated to Q-Analytics",
-            "steps": [
-                       
-              { "id": "#4933p4s1", "name": "AgglomerativeCluster", "desc": "3938","icon":"/assets/images/awsicons/Analytics.png","status":"/assets/images/awsicons/redarr.jpg",  },
-              { "id": "#4933p4s2", "name": "CommunityStructure", "desc": "3812","icon":"/assets/images/awsicons/Analytics.png","status":"/assets/images/awsicons/redarr.jpg", },
-              { "id": "#4933p4s3", "name": "HierarchicalCluster", "desc": "6714","icon":"/assets/images/awsicons/Analytics.png","status":"/assets/images/awsicons/redarr.jpg",  },
-              { "id": "#4933p4s4", "name": "MergeEdge", "desc": "743","icon":"/assets/images/awsicons/Analytics.png","status":"/assets/images/awsicons/redarr.jpg", }
-                ],
-            },
-        
-      ]
-    },
-    { 
-      "id": "#3911",
-      "processes": [
-        {
-          "id": "#3911p1",
-          "status":"/assets/images/awsicons/greenarr.jpg",
-          "icon":"/assets/images/awsicons/Onprem.png",
-          "desc": "On-prem to S3",
-          "steps": [
-                     
-            { "id": "#3911p1s1", "name": "AgglomerativeCluster", "desc": "3938", "icon":"/assets/images/awsicons/Onprem.png" ,"status":"/assets/images/awsicons/redarr.jpg", },
-            { "id": "#3911p1s2", "name": "CommunityStructure", "desc": "3812","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg",  },
-            { "id": "#3911p1s3", "name": "HierarchicalCluster", "desc": "6714","icon":"/assets/images/awsicons/Onprem.png" ,"status":"/assets/images/awsicons/redarr.jpg", },
-            { "id": "#3911p1s4", "name": "MergeEdge", "desc": "743","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg", }
-          
-              ],
-          },
-          {
-            "id": "#3911p2",
-            "status":"/assets/images/awsicons/redarr.jpg",
-            "icon":"/assets/images/awsicons/s3.png",
-            "desc": "S3 to Redshift source raw",
-            "steps": [
-                       
-              { "id": "#3911p1s1", "name": "AgglomerativeCluster", "desc": "3938", "icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg", },
-              { "id": "#3911p1s2", "name": "CommunityStructure", "desc": "3812","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg",  },
-              { "id": "#3911p1s3", "name": "HierarchicalCluster", "desc": "6714","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg", },
-              { "id": "#3911p1s4", "name": "MergeEdge", "desc": "743","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg", }
-            
-                ],
-            },
-            {
-              "id": "#3911p3",
-              "status":"/assets/images/awsicons/greenarr.jpg",
-              "icon":"/assets/images/awsicons/redshift.png",
-              "desc": "Redshift to Curated",
-              "steps": [
-                         
-                { "id": "#3911p1s1", "name": "AgglomerativeCluster", "desc": "3938", "icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg",  },
-                { "id": "#3911p1s2", "name": "CommunityStructure", "desc": "3812","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg",  },
-                { "id": "#3911p1s3", "name": "HierarchicalCluster", "desc": "6714","icon":"/assets/images/awsicons/Onprem.png" ,"status":"/assets/images/awsicons/redarr.jpg", },
-                { "id": "#3911p1s4", "name": "MergeEdge", "desc": "743","icon":"/assets/images/awsicons/Onprem.png" ,"status":"/assets/images/awsicons/redarr.jpg", }
-              
-                  ],
-              },
-              {
-                "id": "#3911p4",
-                "status":"/assets/images/awsicons/greenarr.jpg",
-                "icon":"/assets/images/awsicons/Analytics.png",
-                "desc": "Curated to Q-Analytics",
-                "steps": [
-                           
-                  { "id": "#3911p1s1", "name": "AgglomerativeCluster", "desc": "3938", "icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg",  },
-                  { "id": "#3911p1s2", "name": "CommunityStructure", "desc": "3812","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg", },
-                  { "id": "#3911p1s3", "name": "HierarchicalCluster", "desc": "6714","icon":"/assets/images/awsicons/Onprem.png" ,"status":"/assets/images/awsicons/redarr.jpg", },
-                  { "id": "#3911p1s4", "name": "MergeEdge", "desc": "743","icon":"/assets/images/awsicons/Onprem.png","status":"/assets/images/awsicons/redarr.jpg",  }
-                
-                    ],
-                },
-            
-          ]
-        },
-   
-   
+
+
+
+
+          { "id": "#4933p2s1", "name": "Check if trailer file exists; if not generate trailer file", "desc": "INSERT INTO table_name (column1, column2}", "icon": "/assets/images/awsicons/s3.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#4933p2s2", "name": "Load trailer file to log table", "desc": "INSERT INTO table_name (column1, column2}", "icon": "/assets/images/awsicons/s3.png", "status": "/assets/images/awsicons/greenarr.jpg", },
+          { "id": "#4933p2s3", "name": "Reconcile trailer file and raw table count", "desc": "INSERT INTO table_name (column1, column2}", "icon": "/assets/images/awsicons/s3.png", "status": "/assets/images/awsicons/greenarr.jpg", },
+          { "id": "#4933p2s4", "name": "Trigger notification/alertse", "desc": "INSERT INTO table_name (column1, column2}", "icon": "/assets/images/awsicons/s3.png", "status": "/assets/images/awsicons/redarr.jpg", }
+        ],
+      },
+      {
+        "id": "#4933p3",
+        "status": "/assets/images/awsicons/greenarr.jpg",
+        "icon": "/assets/images/awsicons/redshift.png",
+        "desc": "Source-raw to Curated",
+        "steps": [
+          { "id": "#4933p3s1", "name": "Copy data from source_raw to curated tables", "desc": "3938", "icon": "/assets/images/awsicons/redshift.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#4933p3s2", "name": "each table will have its own step to load", "desc": "3812", "icon": "/assets/images/awsicons/redshift.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#4933p3s3", "name": "Run DQ controls - reconcile", "desc": "6714", "icon": "/assets/images/awsicons/redshift.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#4933p3s4", "name": "Trigger notification / alerts", "desc": "743", "icon": "/assets/images/awsicons/redshift.png", "status": "/assets/images/awsicons/redarr.jpg", }
+        ],
+      },
+      {
+        "id": "#4933p4",
+        "status": "/assets/images/awsicons/greenarr.jpg",
+        "icon": "/assets/images/awsicons/Analytics.png",
+        "desc": "Curated to Consumption",
+        "steps": [
+          { "id": "#4933p4s1", "name": "Copy data from curated to consumption table", "desc": "3938", "icon": "/assets/images/awsicons/Analytics.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#4933p4s2", "name": "Unload to outbound S3(separate process ?)", "desc": "3812", "icon": "/assets/images/awsicons/Analytics.png", "status": "/assets/images/awsicons/redarr.jpg", },
+        ],
+      },
+
+    ]
+  },
+  {
+    "id": "#3911",
+    "processes": [
+      {
+        "id": "#3911p1",
+        "status": "/assets/images/awsicons/greenarr.jpg",
+        "icon": "/assets/images/awsicons/Onprem.png",
+        "desc": "On-prem to S3",
+        "steps": [
+
+          { "id": "#3911p1s1", "name": "AgglomerativeCluster", "desc": "3938", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s2", "name": "CommunityStructure", "desc": "3812", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s3", "name": "HierarchicalCluster", "desc": "6714", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s4", "name": "MergeEdge", "desc": "743", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", }
+
+        ],
+      },
+      {
+        "id": "#3911p2",
+        "status": "/assets/images/awsicons/redarr.jpg",
+        "icon": "/assets/images/awsicons/s3.png",
+        "desc": "S3 to Redshift Source-raw",
+        "steps": [
+          { "id": "#3911p1s1", "name": "Check if the files are processed previously", "desc": "3938", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s2", "name": "Truncate the table", "desc": "3812", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s3", "name": "Load data from S3 into source_raw table", "desc": "6714", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s4", "name": "Logging into batch", "desc": "743", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", }
+
+        ],
+      },
+      {
+        "id": "#3911p3",
+        "status": "/assets/images/awsicons/greenarr.jpg",
+        "icon": "/assets/images/awsicons/redshift.png",
+        "desc": "Source-raw to Curated",
+        "steps": [
+
+          { "id": "#3911p1s1", "name": "AgglomerativeCluster", "desc": "3938", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s2", "name": "CommunityStructure", "desc": "3812", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s3", "name": "HierarchicalCluster", "desc": "6714", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s4", "name": "MergeEdge", "desc": "743", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", }
+
+        ],
+      },
+      {
+        "id": "#3911p4",
+        "status": "/assets/images/awsicons/greenarr.jpg",
+        "icon": "/assets/images/awsicons/Analytics.png",
+        "desc": "Curated to Consumption",
+        "steps": [
+
+          { "id": "#3911p1s1", "name": "AgglomerativeCluster", "desc": "3938", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s2", "name": "CommunityStructure", "desc": "3812", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s3", "name": "HierarchicalCluster", "desc": "6714", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", },
+          { "id": "#3911p1s4", "name": "MergeEdge", "desc": "743", "icon": "/assets/images/awsicons/Onprem.png", "status": "/assets/images/awsicons/redarr.jpg", }
+
+        ],
+      },
+
+    ]
+  },
+
+
 ];
 /*
  [ {

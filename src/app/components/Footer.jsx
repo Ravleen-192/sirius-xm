@@ -41,14 +41,14 @@ const Footer = () => {
       <AppBar color="primary" position="static" sx={{ zIndex: 96 }}>
         <AppFooter>
           <FooterContent>
-            <a href="https://www.linkedin.com/company/triadh-ai/?viewAsMember=true">
-              <Button variant="contained" color="secondary">
-                Know about us!
-              </Button>
-            </a>
+            {/* <a href="https://www.linkedin.com/company/triadh-ai/?viewAsMember=true">*/}
+            <Button variant="contained" color="secondary">
+              Know about us!
+            </Button>
+            {/*</a>*/}
             <Span sx={{ m: 'auto' }}></Span>
             <Paragraph sx={{ m: 0 }}>
-            © {year} Triadh
+              © {year} Company-name
             </Paragraph>
           </FooterContent>
         </AppFooter>

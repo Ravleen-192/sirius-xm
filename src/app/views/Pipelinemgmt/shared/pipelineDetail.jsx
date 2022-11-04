@@ -2,11 +2,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box, styled } from "@mui/material";
 import {
   Avatar,
- Table,
+  Table,
   TableCell,
   TableBody,
   TableRow,
- 
+
 } from '@mui/material';
 import { Paragraph } from 'app/components/Typography';
 import Accordion from "@mui/material/Accordion";
@@ -40,67 +40,67 @@ const SecondaryHeading = styled(Typography)(({ theme }) => ({
 
 export default function ControlledExpansionPanels(product, productid) {
   const [expanded, setExpanded] = useState(false);
-  
+
   const handleChange = (panel) => (_, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   return (
     <Box width="100%">
-       {product.productList.product.map((step, index) => {
-      
-      return (<Accordion expanded={expanded === step.id} onChange={handleChange(step.id)}>
-        <AccordionSummary
-          id="panel1bh-header"
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1bh-content"
-        >
-          <Heading>{step.id} </Heading>
-          <SecondaryHeading>{step.desc}</SecondaryHeading>
-        </AccordionSummary>
+      {product.productList.product.map((step, index) => {
 
-        {step.steps.map((st, index) => {
-       
-      return (<AccordionDetails>
-           <ProductTable>
-         
-         <TableBody>
-         <TableRow key={st.id} hover>
-          <TableCell  align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={st.icon} />
-                        </TableCell>
-    
-                        <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
-                          <Box display="flex" alignItems="left">
-                            
-                            <Paragraph>{st.name}</Paragraph>
-                            
-                          </Box>
-                        </TableCell>
-                        <TableCell  align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={st.status} />
-                        </TableCell>
-                        <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
-                          <Box display="flex" alignItems="left">
-                            
-                            <Paragraph>{st.desc}</Paragraph>
-                            
-                          </Box>
-                        </TableCell>
-    
-                        </TableRow>  
-         
-         </TableBody>
-         </ProductTable>
-        </AccordionDetails>);
-      
-    })}
+        return (<Accordion expanded={expanded === step.id} onChange={handleChange(step.id)}>
+          <AccordionSummary
+            id="panel1bh-header"
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+          >
+            <Heading>{step.id} </Heading>
+            <SecondaryHeading>{step.desc}</SecondaryHeading>
+          </AccordionSummary>
+
+          {step.steps.map((st, index) => {
+
+            return (<AccordionDetails>
+              <ProductTable>
+
+                <TableBody>
+                  <TableRow key={st.id} hover>
+                    <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                      <Avatar src={st.icon} />
+                    </TableCell>
+
+                    <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
+                      <Box display="flex" alignItems="left">
+
+                        <Paragraph>{st.name}</Paragraph>
+
+                      </Box>
+                    </TableCell>
+                    <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                      <Avatar src={st.status} />
+                    </TableCell>
+                    <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
+                      <Box display="flex" alignItems="left">
+
+                        <Paragraph>{st.desc}</Paragraph>
+
+                      </Box>
+                    </TableCell>
+
+                  </TableRow>
+
+                </TableBody>
+              </ProductTable>
+            </AccordionDetails>);
+
+          })}
         </Accordion>);
-      
-    })}
-       
-       
+
+      })}
+
+
     </Box>
-       
+
   );
 }

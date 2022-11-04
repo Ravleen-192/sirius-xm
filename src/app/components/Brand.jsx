@@ -24,11 +24,11 @@ const Brand = ({ children }) => {
   return (
     <BrandRoot>
       <Box display="inline-flex" alignItems="left">
-        <MatxLogo /> 
+        {/*<MatxLogo /> 
         <StyledSpan mode={mode} className="sidenavHoverShow">
           Triadh
-        </StyledSpan>
-      </Box>      
+  </StyledSpan>*/}
+      </Box>
     </BrandRoot>
   );
 };
