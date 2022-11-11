@@ -1,17 +1,13 @@
 import { Grid, styled, useTheme } from '@mui/material';
 import { Fragment } from 'react';
+import './shared/dlFlow.css'
 
-import RowCards from './shared/RowCards';
-import StatCards from './shared/StatCards';
-import StatCards2 from './shared/StatCards2';
 
-import Pipelinetable from './shared/Pipelinetable';
-import SelectProcess from './shared/SelectProcess';
-
-import AddProcess from './shared/AddProcess';
-
+import DPLineage from './shared/AddProcess'
 
 const ContentBox = styled('div')(({ theme }) => ({
+  minWidth: 400,
+  minHeight: 400,
   margin: '30px',
   [theme.breakpoints.down('sm')]: { margin: '16px' },
 }));
@@ -36,20 +32,24 @@ const H4 = styled('h4')(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Playout = () => {
+const DataLineage = () => {
   const { palette } = useTheme();
 
   return (
     <Fragment>
       <ContentBox className="analytics">
-        <Grid container spacing={3}>
-          <Grid item lg={12} md={12} sm={12} xs={12}>
 
-            <StatCards2 />
-            <StatCards />
-            <Pipelinetable />
-            
-          </Grid>
+        <Grid item lg={12} md={12} sm={12} xs={12}>
+
+          <div style={{ height: 400 }}>
+            {/*
+            <h3 className="title">
+                Access & Authorization
+            </h3>
+            */}
+            <DPLineage />
+          </div>
+
 
 
         </Grid>
@@ -58,4 +58,4 @@ const Playout = () => {
   );
 };
 
-export default Playout;
+export default DataLineage;

@@ -1,5 +1,10 @@
-import { Card, Fab, Grid, Icon, lighten, styled, useTheme,Button } from '@mui/material';
+import { Card, Fab, Grid, Icon, lighten, styled, useTheme, Button } from '@mui/material';
 
+
+import React from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import PlCreate from '../CreatePipeline';
 const ContentBox = styled('div')(() => ({
   display: 'flex',
   flexWrap: 'wrap',
@@ -43,9 +48,7 @@ const IconBox = styled('div')(() => ({
 }));
 
 const StatCards2 = () => {
-  const { palette } = useTheme();
-  const textError = palette.error.main;
-  const bgError = lighten(palette.error.main, 0.85);
+
 
   return (
     <Grid container spacing={3} sx={{ mb: 3 }}>
@@ -56,18 +59,18 @@ const StatCards2 = () => {
               <Icon sx={{ color: '#08ad6c' }}>bubble_chart</Icon>
             </FabIcon>
             <H3 textcolor={'#08ad6c'}>Pipelines</H3>
-            <hr/><Button sx={{ background: 'rgba(9, 182, 109, 0.15)' }}>Create +</Button>
+            <hr /><Button sx={{ background: 'rgba(9, 182, 109, 0.15)' }}><Link className="link" to='/datalineage/default'><strong>Create +</strong></Link></Button>
           </ContentBox>
 
           <ContentBox sx={{ pt: 2 }}>
-          <Span textcolor={'grey'}> <H3 color='gray'>Move Data between any Source and Destination.</H3>
-            
-          </Span>
+            <Span textcolor={'grey'}> <H3 color='gray'>Move Data between any Source and Destination.</H3>
+
+            </Span>
           </ContentBox>
         </Card>
       </Grid>
-    
-     
+
+
     </Grid>
   );
 };

@@ -60,7 +60,7 @@ const Small = styled('small')(({ bgcolor }) => ({
 
 const Pipelinetable = () => {
   const [prodsel, setprodsel] = useState('');
-  const [isActive, setActive] = useState(null);
+  const [isActive, setActive] = useState('');
   const [prod, setprod] = useState([]);
   const { palette } = useTheme();
   const bgError = palette.error.main;
@@ -69,14 +69,14 @@ const Pipelinetable = () => {
   const toggleActive = (i) => {
 
     if (i === isActive)
-      setActive(null);
-    else setActive(i);
+      setActive('');
+    else setActive({ i });
 
   };
   const showDetail = (product, productid, i) => {
 
     if (i === isActive)
-      setActive(null);
+      setActive('');
     else setActive(i);
     setprodsel({ productid });
     setprod({ product });
