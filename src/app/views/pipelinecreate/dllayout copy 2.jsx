@@ -8,17 +8,12 @@ import Typography from '@mui/material/Typography';
 import AddProcess from './shared/AddProcess';
 import SelectSteps from './shared/AddSteps';
 import Pipelinetable from 'app/views/Pipelinemgmt/shared/Pipelinetable';
-import { Link } from 'react-router-dom';
+
 const steps = ['Select the processes', 'Steps for process1', 'Steps for process2', 'Steps for process3', 'Steps for process4', 'Review and Create a pipleline'];
 
 const plCreate = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
-  const [process1, setprocess1] = React.useState({});
-  const [process2, setprocess2] = React.useState({});
-  const [process3, setprocess3] = React.useState({});
-  const [process4, setprocess4] = React.useState({});
-
 
   const totalSteps = () => {
     return steps.length;
@@ -80,11 +75,9 @@ const plCreate = () => {
       <div>
         {allStepsCompleted() ? (
           <React.Fragment>
-            {/*<Typography sx={{ mt: 2, mb: 1 }}>
+            <Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
-        </Typography>*/}
-            <Button sx={{ background: 'rgba(9, 182, 109, 0.15)', mt: 2, mb: 1 }}><Link className="link" to='/Pipelinemgmt/default'><strong>All steps completed - pipeline is ready.</strong></Link></Button>
-
+            </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
               <Box sx={{ flex: '1 1 auto' }} />
               <Button onClick={handleReset}>Reset</Button>
@@ -93,8 +86,8 @@ const plCreate = () => {
         ) : (
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-              {/*Step {activeStep + 1}*/}
-              {activeStep === 0 ? <AddProcess /> : activeStep === 1 ? <SelectSteps key={"process1"} /> : activeStep === 2 ? <SelectSteps key={"process2"} /> : activeStep === 3 ? <SelectSteps key={"process3"} /> : activeStep === 4 ? <SelectSteps key={"process4"} /> : <Pipelinetable />}
+              Step {activeStep + 1}
+              {activeStep === 0 ? <AddProcess /> : (activeStep === 1 || activeStep === 2 || activeStep === 3 || activeStep === 4) ? <SelectSteps /> : <Pipelinetable />}
 
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -110,15 +103,11 @@ const plCreate = () => {
               <Button onClick={handleNext} sx={{ mr: 1 }}>
                 Next
               </Button>
-              {/* <Typography variant="caption" sx={{ display: 'inline-block', color: 'red', mt: '20' }}>
-                    Step {activeStep + 1} already completed
-                </Typography>*/}
               {activeStep !== steps.length &&
                 (completed[activeStep] ? (
-
-                  <Button sx={{ color: 'red' }}>
+                  <Typography variant="caption" sx={{ display: 'inline-block' }}>
                     Step {activeStep + 1} already completed
-                  </Button>
+                  </Typography>
                 ) : (
                   <Button onClick={handleComplete}>
                     {completedSteps() === totalSteps() - 1

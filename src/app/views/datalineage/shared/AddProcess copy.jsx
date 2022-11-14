@@ -12,9 +12,9 @@ import ButtonBase from '@mui/material/ButtonBase';
 import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-
+import AddSteps from './AddSteps';
 import Chip from '@mui/material/Chip';
-import { steps as initialSteps } from "./steps";
+import { options as initialOptions } from "./options";
 
 
 const StyledAutocompletePopper = styled('div')(({ theme }) => ({
@@ -46,7 +46,13 @@ const StyledAutocompletePopper = styled('div')(({ theme }) => ({
     position: 'relative',
   },
 }));
-
+const H4 = styled('h4')(({ theme }) => ({
+  fontSize: '1rem',
+  fontWeight: '500',
+  marginBottom: '16px',
+  textTransform: 'capitalize',
+  color: theme.palette.text.secondary,
+}));
 function PopperComponent(props) {
   const { disablePortal, anchorEl, open, ...other } = props;
   return <StyledAutocompletePopper {...other} />;
@@ -112,94 +118,106 @@ const Button = styled(ButtonBase)(({ theme }) => ({
 }));
 
 
-export default function AddSteps() {
+export default function AddProcess() {
 
-  const [inputValue, setInputValue] = useState("");
-  const [steps, setSteps] = useState(initialSteps);
+  const [value, setValue] = useState("");
+  const [options, setOptions] = useState(initialOptions);
   const theme = useTheme();
+
   return (
-    <Autocomplete
-      options={steps}
-      freeSolo
-      noOptionsText="No Option available."
-      multiple
-      open
-      //defaultValue={[steps[1].name]}
-      getOptionLabel={(step) => step.name}
-      /*onInputChange={(e, newValue) => {
-        setInputValue(newValue);
-      }}*/
-      disableCloseOnSelect
-      PopperComponent={PopperComponent}
+    <>
+      <H4>Select the process.</H4>
+      <Autocomplete
+        options={options}
+        freeSolo
+        autoFocus
+        //noOptionsText="No option available"
+        //multiple
+        //open
+        //defaultValue={[options[1].name]}
+        getOptionLabel={(option) => option.name}
+        /* onInputChange={(e, newValue) => {
+           setInputValue(newValue);
+         }}*/
+        onChange={(event, newValue) => {
+          setValue(newValue);
+          console.log("selectedvalue", value);
+        }}
+        //disableCloseOnSelect
+        PopperComponent={PopperComponent}
 
 
-      /* renderTags={(value, getTagProps) =>
-           value.map((option, index) => (
-               <Chip variant="outlined" label={Array.isArray(option) ? option.name : option}  {...getTagProps({ index })} />
-           ))
-       }*/
-      renderOption={(props, steps, { selected }) => (
-        <li {...props}>
-          <Box
-            component={DoneIcon}
-            sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
-            style={{
-              visibility: selected ? 'visible' : 'hidden',
-            }}
+        /* renderTags={(value, getTagProps) =>
+             value.map((option, index) => (
+                 <Chip variant="outlined" label={Array.isArray(option) ? option.name : option}  {...getTagProps({ index })} />
+             ))
+         }*/
+        renderOption={(props, options, { selected }) => (
+          <li {...props}>
+            <Box
+              component={DoneIcon}
+              sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
+              style={{
+                visibility: selected ? 'visible' : 'hidden',
+              }}
+            />
+            <Box
+              sx={{
+                flexGrow: 1,
+                '& span': {
+                  color:
+                    theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
+                },
+              }}
+            >
+              <Avatar src={options.icon} alt="I" />
+              <br />
+
+            </Box>
+
+            <Box
+              sx={{
+                flexGrow: 1,
+                '& span': {
+                  color:
+                    theme.palette.mode === 'light' ? '#586069' : '#8b949e',
+                },
+              }}
+            >
+              {options.name}
+              <br />
+
+            </Box>
+            <Box
+              component={CloseIcon}
+              sx={{ opacity: 0.6, width: 18, height: 18 }}
+              style={{
+                visibility: selected ? 'visible' : 'hidden',
+              }}
+            />
+          </li>
+        )}
+
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            autoFocus
+            placeholder="Processes"
+          /* onKeyDown={(e) => {
+             if (
+               e.key === "Enter" &&
+               options.findIndex((o) => o.name === inputValue) === -1
+             ) {
+  
+               setOptions((o) => o.concat({ name: inputValue, icon: "/assets/images/awsicons/quicksight.png" }));
+             }
+           }}*/
           />
-          <Box
-            sx={{
-              flexGrow: 1,
-              '& span': {
-                color:
-                  theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
-              },
-            }}
-          >
-            <Avatar src={steps.icon} alt="I" />
-            <br />
 
-          </Box>
-
-          <Box
-            sx={{
-              flexGrow: 1,
-              '& span': {
-                color:
-                  theme.palette.mode === 'light' ? '#586069' : '#8b949e',
-              },
-            }}
-          >
-            {steps.name}
-            <br />
-
-          </Box>
-          <Box
-            component={CloseIcon}
-            sx={{ opacity: 0.6, width: 18, height: 18 }}
-            style={{
-              visibility: selected ? 'visible' : 'hidden',
-            }}
-          />
-        </li>
-      )}
-
-      renderInput={(params) => (
-        <TextField
-          {...params}
-
-          placeholder="Steps"
-        /*onKeyDown={(e) => {
-          if (
-            e.key === "Enter" &&
-            steps.findIndex((o) => o.name === inputValue) === -1
-          ) {
-
-            setSteps((o) => o.concat({ name: inputValue, icon: "/assets/images/awsicons/quicksight.png" }));
-          }
-        }}*/
-        />
-      )}
-    />
+        )}
+      />
+      <H4>Add the Steps for the selected process.</H4>
+      <AddSteps />
+    </>
   );
 }
