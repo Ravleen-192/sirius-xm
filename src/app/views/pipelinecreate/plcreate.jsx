@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -10,11 +10,11 @@ import Pipelinetable from 'app/views/Pipelinemgmt/shared/Pipelinetable';
 import { Link } from 'react-router-dom';
 const steps = ['Process1 and Steps', 'Process2 and Steps', 'Process3 and Steps', 'Process4 and Steps', 'Review and Create a pipleline'];
 
-const plCreate = () => {
+
+const PlCreate = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
   const [processData, setprocessData] = React.useState({ id: '', name: '', icon: '' });
-
 
   const totalSteps = () => {
     return steps.length;
@@ -131,4 +131,4 @@ const plCreate = () => {
     </Box>
   );
 }
-export default plCreate;
+export default PlCreate;
