@@ -86,42 +86,30 @@ const Pipelinetable = () => {
     <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
       <Box overflow="auto">
         <ProductTable>
-
           <TableBody>
             {productList.map((product, nkey) => {
-              console.log("product.id")
-              console.log(product.id)
-              console.log("isActive")
-              console.log(isActive)
-              return (<> <TableRow key={product.id} hover selected style={
+              return (<> <TableRow key={nkey} hover selected style={
                 isActive === product.id ? { background: 'rgba(9, 182, 109, 0.15)' } : null} onClick={() => showDetail(product.processes, product.id, product.id)}>
-                <TableCell key={product.id} align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
+                <TableCell align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
                   {product.id}
                 </TableCell>
                 {product.processes.map((process, index) => {
-
-
                   return (
                     <>
-                      <TableCell key={process.id} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={product.processes[index].icon} />
+                      <TableCell key={index} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                        <Avatar src={process.icon} />
                       </TableCell>
-
                       <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
                         <Box display="flex" alignItems="left">
-
-                          <Paragraph>{product.processes[index].desc}</Paragraph>
-
+                          <Paragraph>{process.desc}</Paragraph>
                         </Box>
                       </TableCell>
-
                       <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={product.processes[index].status} />
+                        <Avatar src={process.status} />
                       </TableCell>
                     </>
                   );
                 })}
-
                 <TableCell sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
                   <IconButton>
                     {isActive === product.id ?
@@ -131,23 +119,17 @@ const Pipelinetable = () => {
                 </TableCell>
               </TableRow>
                 {
-
                   (prodsel !== '' && isActive === product.id) ?
-
-                    <TableRow >
+                    <TableRow key={product.id} >
                       <TableCell sx={{ px: 0, justifyContent: 'center', backgroundColor: 'rgba(9, 182, 109, 0.15)' }} colSpan={36}>
                         <PipelineDetail productList={prod} productid={prodsel} /></TableCell></TableRow>
                     : null
                 }
               </>);
-
-
             })}
-
           </TableBody>
         </ProductTable>
       </Box>
-
     </Card>
   );
 };

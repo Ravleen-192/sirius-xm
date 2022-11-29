@@ -1,15 +1,22 @@
 import { React, Fragment, useState } from "react";
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
+import Stack from '@mui/material/Stack';
 import { useTheme, styled } from '@mui/material/styles';
-
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
-
+import {
+  Button,
+  ButtonGroup
+} from "@mui/material";
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import AddSteps from './AddSteps';
 //import Chip from '@mui/material/Chip';
 import { options as initialOptions } from "./options";
 
@@ -55,16 +62,11 @@ PopperComponent.propTypes = {
   open: PropTypes.bool.isRequired,
 };
 
+export default function AddProcess({ AddProcessData }) {
 
-
-
-
-export default function AddProcess(props) {
-
-  const [processData, setprocessData] = useState(props.processData);
   const [options, setOptions] = useState(initialOptions);
   const [inputValue, setInputValue] = useState("");
-  const [value, setValue] = useState(options[0]);
+  const [value, setValue] = useState([]);
 
   const theme = useTheme();
 
@@ -74,17 +76,15 @@ export default function AddProcess(props) {
       <Autocomplete
         options={options}
         freeSolo
-        autoFocus
+        //autoFocus
         //noOptionsText="No option available"
         //multiple
         //open
         //defaultValue={[options[1].name]}
         getOptionLabel={(option) => option.name}
-        value={value}
-        onChange={(event, newValue) => setprocessData(newValue => ({
-          ...processData, newValue
-        })
-        )}
+        //value={value}
+        name='processData'
+        onChange={(event, newValue) => AddProcessData(newValue, null, 'processData')}
 
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
@@ -135,6 +135,7 @@ export default function AddProcess(props) {
               <br />
 
             </Box>
+
             <Box
               component={CloseIcon}
               sx={{ opacity: 0.6, width: 18, height: 18 }}
@@ -146,7 +147,7 @@ export default function AddProcess(props) {
         )}
 
         renderInput={(params) => (
-          <TextField
+          <Stack direction="row" spacing={2} height="50"><TextField
             {...params}
             autoFocus
             placeholder="Processes"
@@ -161,11 +162,32 @@ export default function AddProcess(props) {
            }}*/
           />
 
+            <Select sx={{ opacity: 0.6, width: 120, height: 50 }}
+              labelId="demo-simple-select-required-label"
+              id="demo-simple-select-required"
+              placeholder="Seq*"
+              lable="Sequence"
+            //value={value}
+
+            // onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>Sequence</em>
+              </MenuItem>
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+            </Select>
+
+
+          </Stack>
         )}
       />
+
+
+
+
       <h4>Add the Steps for the selected process.</h4>
-      {console.log("props.processData", props.processData)}
-      <AddSteps />
     </>
   );
 }

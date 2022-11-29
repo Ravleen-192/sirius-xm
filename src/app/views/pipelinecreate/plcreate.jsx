@@ -1,4 +1,6 @@
-import React from 'react';
+import { React, useState, useEffect, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -6,15 +8,73 @@ import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AddProcess from './shared/AddProcess';
-import Pipelinetable from 'app/views/Pipelinemgmt/shared/Pipelinetable';
-import { Link } from 'react-router-dom';
+import AddSteps from './shared/AddSteps';
+import Pipelinetable from './shared/Pipelinetable';
+
+
 const steps = ['Process1 and Steps', 'Process2 and Steps', 'Process3 and Steps', 'Process4 and Steps', 'Review and Create a pipleline'];
 
 
 const PlCreate = () => {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState({});
-  const [processData, setprocessData] = React.useState({ id: '', name: '', icon: '' });
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState({});
+  const [processData, setprocessData] = useState({ id: '', name: '', icon: '', steps: [] });
+  const [pUid, setpUid] = useState('');
+  //const [pipelineData, setpipelineData] = useState({ id: '', processes: [] });
+  const [state, setState] = useState([
+    {
+      id: "",
+      processes: []
+    }
+  ]);
+  const [pipelineData, setpipelineData] = useState([
+
+  ]);
+
+  const AddtoPipeline = () => {
+
+    setState((prev) => [
+      ...prev.filter((a, i) => i !== 0),
+      { ...prev[0], processes: [...prev[0].processes, { id: processData.id, name: processData.name, icon: processData.icon, steps: processData.steps }] }
+    ]);
+  };
+  const AddProcessData = (field) => (event, value, selectedKey) => {
+
+    let data = { ...processData };
+    if (selectedKey === 'processData') {
+      data.id = event.id;
+      data.name = event.name;
+      data.icon = event.icon;
+    }
+    else if (selectedKey === 'stepsData')
+      data.steps = event;
+
+    setprocessData(data)
+
+  };
+
+  const createpipleineID = () => {
+    const unique_id = uuid();
+    const small_id = unique_id.slice(0, 8);
+
+    setpUid(small_id)
+
+  };
+  ///dont touch
+  useEffect(() => {
+    //setState({ id: pUid });
+
+  }, [pUid]);
+
+
+  useEffect(() => {
+
+  }, [processData]);
+  useEffect(() => {
+    setpipelineData(state);
+    console.log("pipelinedata ", state);
+  }, [state]);
+
 
   const totalSteps = () => {
     return steps.length;
@@ -33,6 +93,15 @@ const PlCreate = () => {
   };
 
   const handleNext = () => {
+
+    console.log("processData handle next", processData);
+
+    if (activeStep === 0) {
+      createpipleineID();
+    }
+
+    AddtoPipeline();
+
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
@@ -47,6 +116,7 @@ const PlCreate = () => {
   };
 
   const handleStep = (step) => () => {
+
     setActiveStep(step);
   };
 
@@ -61,7 +131,7 @@ const PlCreate = () => {
     setActiveStep(0);
     setCompleted({});
   };
-  console.log("processData", processData);
+
 
   return (
     <Box sx={{ width: '100%', mt: 2 }}>
@@ -76,7 +146,7 @@ const PlCreate = () => {
       </Stepper>
       <div>
         {allStepsCompleted() ? (
-          <React.Fragment>
+          <Fragment>
             {/*<Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
         </Typography>*/}
@@ -86,13 +156,17 @@ const PlCreate = () => {
               <Box sx={{ flex: '1 1 auto' }} />
               <Button onClick={handleReset}>Reset</Button>
             </Box>
-          </React.Fragment>
+          </Fragment>
         ) : (
-          <React.Fragment>
+          <Fragment>
             <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
               {/*Step {activeStep + 1}*/}
 
-              {activeStep === 0 ? <AddProcess key={"process1"} processData={processData} setprocessData={setprocessData} /> : activeStep === 1 ? <AddProcess key={"process2"} processData={processData} setprocessData={setprocessData} /> : activeStep === 2 ? <AddProcess key={"process3"} processData={processData} setprocessData={setprocessData} /> : activeStep === 3 ? <AddProcess key={"process4"} processData={processData} setprocessData={setprocessData} /> : <Pipelinetable />}
+              {activeStep === 0 ? <><AddProcess key={"process1"} AddProcessData={AddProcessData('processData')} /> <AddSteps key={"process1Steps"} AddProcessData={AddProcessData('stepsData')} /></>
+                : activeStep === 1 ? <><AddProcess key={"process2"} AddProcessData={AddProcessData('processData')} /> <AddSteps key={"process2Steps"} AddProcessData={AddProcessData('stepsData')} /></>
+                  : activeStep === 2 ? <><AddProcess key={"process3"} AddProcessData={AddProcessData('processData')} /> <AddSteps key={"process3Steps"} AddProcessData={AddProcessData('stepsData')} /></>
+                    : activeStep === 3 ? <><AddProcess key={"process4"} AddProcessData={AddProcessData('processData')} /> <AddSteps key={"process4Steps"} AddProcessData={AddProcessData('stepsData')} /> </>
+                      : <Pipelinetable pipelineData={pipelineData} pipelineID={pUid} />}
 
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -125,7 +199,7 @@ const PlCreate = () => {
                   </Button>
                 ))}
             </Box>
-          </React.Fragment>
+          </Fragment>
         )}
       </div>
     </Box>
