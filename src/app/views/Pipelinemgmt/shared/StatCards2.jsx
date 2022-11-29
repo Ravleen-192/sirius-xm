@@ -1,10 +1,10 @@
-import { Card, Fab, Grid, Icon, lighten, styled, useTheme, Button } from '@mui/material';
+import { Card, Fab, Grid, Icon, styled, Button } from '@mui/material';
 
 
 import React from 'react';
-import { useState } from 'react';
+
 import { Link } from 'react-router-dom';
-import PlCreate from '../CreatePipeline';
+
 const ContentBox = styled('div')(() => ({
   display: 'flex',
   flexWrap: 'wrap',
@@ -24,11 +24,6 @@ const H3 = styled('h3')(({ textcolor }) => ({
   marginLeft: '12px',
 }));
 
-const H1 = styled('h1')(({ theme }) => ({
-  margin: 0,
-  flexGrow: 1,
-  color: theme.palette.text.secondary,
-}));
 
 const Span = styled('span')(({ textcolor }) => ({
   fontSize: '13px',
@@ -36,16 +31,7 @@ const Span = styled('span')(({ textcolor }) => ({
   marginLeft: '4px',
 }));
 
-const IconBox = styled('div')(() => ({
-  width: 16,
-  height: 16,
-  color: '#fff',
-  display: 'flex',
-  overflow: 'hidden',
-  borderRadius: '300px ',
-  justifyContent: 'center',
-  '& .icon': { fontSize: '14px' },
-}));
+
 
 const StatCards2 = () => {
 
@@ -59,7 +45,7 @@ const StatCards2 = () => {
               <Icon sx={{ color: '#08ad6c' }}>bubble_chart</Icon>
             </FabIcon>
             <H3 textcolor={'#08ad6c'}>Pipelines</H3>
-            <hr /><Button sx={{ background: 'rgba(9, 182, 109, 0.15)' }}><Link className="link" to='/datalineage/default'><strong>Create +</strong></Link></Button>
+            <hr /><Button sx={{ background: 'rgba(9, 182, 109, 0.15)' }}><Link className="link" to='/pipelinecreate/default'><strong>Create +</strong></Link></Button>
           </ContentBox>
 
           <ContentBox sx={{ pt: 2 }}>

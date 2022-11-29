@@ -6,18 +6,14 @@ import StepButton from '@mui/material/StepButton';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AddProcess from './shared/AddProcess';
-import SelectSteps from './shared/AddSteps';
 import Pipelinetable from 'app/views/Pipelinemgmt/shared/Pipelinetable';
 import { Link } from 'react-router-dom';
-const steps = ['Select the processes', 'Steps for process1', 'Steps for process2', 'Steps for process3', 'Steps for process4', 'Review and Create a pipleline'];
+const steps = ['Process1 and Steps', 'Process2 and Steps', 'Process3 and Steps', 'Process4 and Steps', 'Review and Create a pipleline'];
 
 const plCreate = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState({});
-  const [process1, setprocess1] = React.useState({});
-  const [process2, setprocess2] = React.useState({});
-  const [process3, setprocess3] = React.useState({});
-  const [process4, setprocess4] = React.useState({});
+  const [processData, setprocessData] = React.useState({ id: '', name: '', icon: '' });
 
 
   const totalSteps = () => {
@@ -65,6 +61,7 @@ const plCreate = () => {
     setActiveStep(0);
     setCompleted({});
   };
+  console.log("processData", processData);
 
   return (
     <Box sx={{ width: '100%', mt: 2 }}>
@@ -94,7 +91,8 @@ const plCreate = () => {
           <React.Fragment>
             <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
               {/*Step {activeStep + 1}*/}
-              {activeStep === 0 ? <AddProcess /> : activeStep === 1 ? <SelectSteps key={"process1"} /> : activeStep === 2 ? <SelectSteps key={"process2"} /> : activeStep === 3 ? <SelectSteps key={"process3"} /> : activeStep === 4 ? <SelectSteps key={"process4"} /> : <Pipelinetable />}
+
+              {activeStep === 0 ? <AddProcess key={"process1"} processData={processData} setprocessData={setprocessData} /> : activeStep === 1 ? <AddProcess key={"process2"} processData={processData} setprocessData={setprocessData} /> : activeStep === 2 ? <AddProcess key={"process3"} processData={processData} setprocessData={setprocessData} /> : activeStep === 3 ? <AddProcess key={"process4"} processData={processData} setprocessData={setprocessData} /> : <Pipelinetable />}
 
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>

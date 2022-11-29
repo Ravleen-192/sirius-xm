@@ -35,7 +35,7 @@ export const navigations = [
     icon: 'hdr_strong',
     children: [
 
-      { name: 'Source Level', path: '/datalineage/default', iconText: 'S' },
+      { name: 'Source Level', path: '/charts/echarts', iconText: 'S' },
 
       { name: 'Table Level', path: '/material/table', iconText: 'T' },
     ],

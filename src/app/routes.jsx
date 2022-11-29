@@ -2,7 +2,7 @@ import AuthGuard from 'app/auth/AuthGuard';
 import chartsRoute from 'app/views/charts/ChartsRoute';
 import dashboardRoutes from 'app/views/dashboard/DashboardRoutes';
 import plRoutes from 'app/views/Pipelinemgmt/plRoutes';
-import dlRoutes from 'app/views/datalineage/dlRoutes';
+import pcRoutes from 'app/views/pipelinecreate/pcRoutes';
 import materialRoutes from 'app/views/material-kit/MaterialRoutes';
 import NotFound from 'app/views/sessions/NotFound';
 import sessionRoutes from 'app/views/sessions/SessionRoutes';
@@ -16,7 +16,7 @@ const routes = [
         <MatxLayout />
       </AuthGuard>
     ),
-    children: [...dashboardRoutes, ...plRoutes, ...dlRoutes, ...chartsRoute, ...materialRoutes],
+    children: [...dashboardRoutes, ...plRoutes, ...pcRoutes, ...chartsRoute, ...materialRoutes],
   },
   ...sessionRoutes,
   { path: '/', element: <Navigate to="dashboard/default" /> },
