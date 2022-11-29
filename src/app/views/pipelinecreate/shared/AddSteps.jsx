@@ -73,7 +73,7 @@ export default function AddSteps({ AddProcessData }) {
       freeSolo
       noOptionsText="No Option available."
       multiple
-      //open
+      open
       autoFocus
       //defaultValue={[steps[1].name]}
       getOptionLabel={(step) => step.name}

@@ -4,18 +4,35 @@ import {
   Card,
   Icon,
   IconButton,
+  MenuItem,
+  Select,
   styled,
   Table,
   TableBody,
   TableCell,
+  TableHead,
   TableRow,
+  useTheme,
 } from '@mui/material';
 import { Paragraph } from 'app/components/Typography';
 import React from 'react';
 import { useState } from 'react';
 import PipelineDetail from './pipelineDetail';
 
+const CardHeader = styled(Box)(() => ({
+  display: 'flex',
+  paddingLeft: '24px',
+  paddingRight: '24px',
+  marginBottom: '12px',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}));
 
+const Title = styled('span')(() => ({
+  fontSize: '1rem',
+  fontWeight: '500',
+  textTransform: 'capitalize',
+}));
 
 const ProductTable = styled(Table)(() => ({
   minWidth: 400,
@@ -30,13 +47,32 @@ const ProductTable = styled(Table)(() => ({
   '& td:first-of-type': { paddingLeft: '16px !important' },
 }));
 
-
+const Small = styled('small')(({ bgcolor }) => ({
+  width: 50,
+  height: 15,
+  color: '#fff',
+  padding: '2px 8px',
+  borderRadius: '4px',
+  overflow: 'hidden',
+  background: bgcolor,
+  boxShadow: '0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24)',
+}));
 
 const Pipelinetable = () => {
   const [prodsel, setprodsel] = useState('');
   const [isActive, setActive] = useState('');
   const [prod, setprod] = useState([]);
+  const { palette } = useTheme();
+  const bgError = palette.error.main;
+  const bgPrimary = palette.primary.main;
+  const bgSecondary = palette.secondary.main;
+  const toggleActive = (i) => {
 
+    if (i === isActive)
+      setActive('');
+    else setActive({ i });
+
+  };
   const showDetail = (product, productid, i) => {
 
     if (i === isActive)
@@ -50,30 +86,42 @@ const Pipelinetable = () => {
     <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
       <Box overflow="auto">
         <ProductTable>
+
           <TableBody>
             {productList.map((product, nkey) => {
-              return (<> <TableRow key={nkey} hover selected style={
+              console.log("product.id")
+              console.log(product.id)
+              console.log("isActive")
+              console.log(isActive)
+              return (<> <TableRow key={product.id} hover selected style={
                 isActive === product.id ? { background: 'rgba(9, 182, 109, 0.15)' } : null} onClick={() => showDetail(product.processes, product.id, product.id)}>
-                <TableCell align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
+                <TableCell key={product.id} align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
                   {product.id}
                 </TableCell>
                 {product.processes.map((process, index) => {
+
+
                   return (
                     <>
-                      <TableCell key={index} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={process.icon} />
+                      <TableCell key={process.id} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                        <Avatar src={product.processes[index].icon} />
                       </TableCell>
+
                       <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
                         <Box display="flex" alignItems="left">
-                          <Paragraph>{process.desc}</Paragraph>
+
+                          <Paragraph>{product.processes[index].desc}</Paragraph>
+
                         </Box>
                       </TableCell>
+
                       <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={process.status} />
+                        <Avatar src={product.processes[index].status} />
                       </TableCell>
                     </>
                   );
                 })}
+
                 <TableCell sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
                   <IconButton>
                     {isActive === product.id ?
@@ -83,17 +131,23 @@ const Pipelinetable = () => {
                 </TableCell>
               </TableRow>
                 {
+
                   (prodsel !== '' && isActive === product.id) ?
-                    <TableRow key={product.id} >
+
+                    <TableRow >
                       <TableCell sx={{ px: 0, justifyContent: 'center', backgroundColor: 'rgba(9, 182, 109, 0.15)' }} colSpan={36}>
                         <PipelineDetail productList={prod} productid={prodsel} /></TableCell></TableRow>
                     : null
                 }
               </>);
+
+
             })}
+
           </TableBody>
         </ProductTable>
       </Box>
+
     </Card>
   );
 };
