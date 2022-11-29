@@ -2,7 +2,7 @@ import Loadable from 'app/components/Loadable';
 import { lazy } from 'react';
 
 const AppTable = Loadable(lazy(() => import('./tables/AppTable')));
-const AppForm = Loadable(lazy(() => import('./forms/AppForm')));
+
 const AppButton = Loadable(lazy(() => import('./buttons/AppButton')));
 const AppIcon = Loadable(lazy(() => import('./icons/AppIcon')));
 const AppProgress = Loadable(lazy(() => import('./AppProgress')));
@@ -20,10 +20,6 @@ const materialRoutes = [
   {
     path: '/material/table',
     element: <AppTable />,
-  },
-  {
-    path: '/material/form',
-    element: <AppForm />,
   },
   {
     path: '/material/buttons',
