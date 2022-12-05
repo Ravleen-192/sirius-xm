@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
@@ -14,7 +14,6 @@ import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 //import Chip from '@mui/material/Chip';
-import { options as initialOptions } from "./options";
 
 
 const StyledAutocompletePopper = styled('div')(({ theme }) => ({
@@ -58,14 +57,26 @@ PopperComponent.propTypes = {
   open: PropTypes.bool.isRequired,
 };
 
-export default function AddProcess({ AddProcessData }) {
+export default function AddProcess({ AddProcessData, process, preOptions }) {
 
-  const [options, setOptions] = useState(initialOptions);
+  const [options, setOptions] = useState(preOptions);
   const [inputValue, setInputValue] = useState("");
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState(process.name);
 
   const theme = useTheme();
+  console.log("process name", process.name)
+  console.log("value", value)
 
+  useEffect(() => {
+
+    setInputValue(process.name);
+    console.log("process.name ", process.name);
+  }, [process.name]);
+
+  useEffect(() => {
+
+    console.log("options ", options);
+  }, [options]);
   return (
     <>
       <h4>Select the process.</h4>
@@ -76,9 +87,10 @@ export default function AddProcess({ AddProcessData }) {
         //noOptionsText="No option available"
         //multiple
         //open
-        //defaultValue={[options[1].name]}
+        //defaultValue={[options[0].name]}
+        isOptionEqualToValue={(option, value) => option.name === process.name}
         getOptionLabel={(option) => option.name}
-        //value={value}
+        value={value}
         name='processData'
         onChange={(event, newValue) => AddProcessData(newValue, null, 'processData')}
 
@@ -86,7 +98,7 @@ export default function AddProcess({ AddProcessData }) {
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        //disableCloseOnSelect
+        disableCloseOnSelect
         PopperComponent={PopperComponent}
 
 
@@ -95,52 +107,70 @@ export default function AddProcess({ AddProcessData }) {
                  <Chip variant="outlined" label={Array.isArray(option) ? option.name : option}  {...getTagProps({ index })} />
              ))
          }*/
-        renderOption={(props, options, { selected }) => (
-          <li {...props}>
-            <Box
-              component={DoneIcon}
-              sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
-              style={{
-                visibility: selected ? 'visible' : 'hidden',
-              }}
-            />
-            <Box
-              sx={{
-                flexGrow: 1,
-                '& span': {
-                  color:
-                    theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
-                },
-              }}
-            >
-              <Avatar src={options.icon} alt="I" />
-              <br />
+        renderOption={(props, options, { selected }) => {
+          { (options.processtemplateid) % 2 === 0 ? options.status = "/assets/images/awsicons/greenarr.jpg" : options.status = "/assets/images/awsicons/redarr.jpg" }
 
-            </Box>
+          return (
+            <li {...props}>
+              <Box
+                component={DoneIcon}
+                sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
+                style={{
+                  visibility: selected ? 'visible' : 'hidden',
+                }}
+              />
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  '& span': {
+                    color:
+                      theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
+                  },
+                }}
+              >
+                <Avatar src={options.icon} alt="I" />
+                <br />
 
-            <Box
-              sx={{
-                flexGrow: 1,
-                '& span': {
-                  color:
-                    theme.palette.mode === 'light' ? '#586069' : '#8b949e',
-                },
-              }}
-            >
-              {options.name}
-              <br />
+              </Box>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  '& span': {
+                    color:
+                      theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
+                  },
+                }}
+              >
+                <Avatar src={options.status} alt="I" />
+                <br />
 
-            </Box>
+              </Box>
 
-            <Box
-              component={CloseIcon}
-              sx={{ opacity: 0.6, width: 18, height: 18 }}
-              style={{
-                visibility: selected ? 'visible' : 'hidden',
-              }}
-            />
-          </li>
-        )}
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  '& span': {
+                    color:
+                      theme.palette.mode === 'light' ? '#586069' : '#8b949e',
+                  },
+                }}
+              >
+                {options.name}
+                <br />
+
+              </Box>
+
+              <Box
+                component={CloseIcon}
+                sx={{ opacity: 0.6, width: 18, height: 18 }}
+                style={{
+                  visibility: selected ? 'visible' : 'hidden',
+                }}
+              />
+            </li>
+          )
+        }
+        }
 
         renderInput={(params) => (
           <Stack direction="row" spacing={2} height="50"><TextField
@@ -179,10 +209,6 @@ export default function AddProcess({ AddProcessData }) {
           </Stack>
         )}
       />
-
-
-
-
       <h4>Add the Steps for the selected process.</h4>
     </>
   );

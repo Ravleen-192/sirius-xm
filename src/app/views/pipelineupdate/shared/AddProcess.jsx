@@ -7,16 +7,12 @@ import { useTheme, styled } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 
 import Select from '@mui/material/Select';
-
-//import ClickAwayListener from '@mui/material/ClickAwayListener';
-//import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-
 //import Chip from '@mui/material/Chip';
 
 
@@ -32,7 +28,7 @@ const StyledAutocompletePopper = styled('div')(({ theme }) => ({
     padding: 0,
     [`& .${autocompleteClasses.option}`]: {
       minHeight: 'auto',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       padding: 8,
       borderBottom: `1px solid  ${theme.palette.mode === 'light' ? ' #eaecef' : '#30363d'
         }`,
@@ -61,52 +57,61 @@ PopperComponent.propTypes = {
   open: PropTypes.bool.isRequired,
 };
 
-export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
+export default function AddProcess({ AddProcessData, LoadProcessData, process, preOptions }) {
 
-  const [inputValue, setInputValue] = useState({});
-  const [steps, setSteps] = useState(preSteps);
-  const [selectedSteps, setSelectedSteps] = useState(selsteps);
+  const [options, setOptions] = useState(preOptions);
+  const [inputValue, setInputValue] = useState("");
+  const [value, setValue] = useState(process.name);
+
   const theme = useTheme();
+  console.log("process name", process.name)
+  console.log("value", value)
+
+  useEffect(() => {
+    LoadProcessData();
+    setInputValue(process.name);
+    console.log("process.name ", process.name);
+  }, [process.name]);
+
   useEffect(() => {
 
-  }, [selsteps]);
-  useEffect(() => {
-    console.log("steps from AddSteps", steps);
-  }, [steps]);
+    console.log("options ", options);
+  }, [options]);
   return (
-    <Autocomplete
-      options={steps}
-      freeSolo
-      noOptionsText="No Option available."
-      multiple
-      open
-      autoFocus
-      defaultValue={selectedSteps}
-      //defaultValue={[steps[1].name]}
-      getOptionLabel={(step) => step.name}
-      /*inputValue={inputValue}
-      onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
-      }}*/
-      name='stepsData'
-      onChange={(event, newValue) => {
-        console.log("Onchange", newValue)
-        return (AddProcessData(newValue, null, 'stepsData'))
-      }}
-      disableCloseOnSelect
-      PopperComponent={PopperComponent}
-      /*renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-              <Chip variant="outlined" label={Array.isArray(option) ? option.name : option}  {...getTagProps({ index })} />
-          ))
-      }*/
-      renderOption={(props, steps, { selected }) => {
-        { (steps.steptemplateid) % 2 === 0 ? steps.status = "/assets/images/awsicons/greenarr.jpg" : steps.status = "/assets/images/awsicons/redarr.jpg" }
-        const tempstepid = `${steps.steptemplateid}`;
-        steps.steptemplateid = tempstepid;
-        return (
-          <Stack direction="row" spacing={2} width="100%" height="50" >
-            <li {...props} sx={{ height: 50, width: '80%' }}>
+    <>
+      <h4>Select the process.</h4>
+      <Autocomplete
+        options={options}
+        freeSolo
+        //autoFocus
+        //noOptionsText="No option available"
+        //multiple
+        //open
+        //defaultValue={[options[0].name]}
+        isOptionEqualToValue={(option, value) => option.name === process.name}
+        getOptionLabel={(option) => option.name}
+        value={value}
+        name='processData'
+        onChange={(event, newValue) => AddProcessData(newValue, null, 'processData')}
+
+        inputValue={inputValue}
+        onInputChange={(event, newInputValue) => {
+          setInputValue(newInputValue);
+        }}
+        disableCloseOnSelect
+        PopperComponent={PopperComponent}
+
+
+        /* renderTags={(value, getTagProps) =>
+             value.map((option, index) => (
+                 <Chip variant="outlined" label={Array.isArray(option) ? option.name : option}  {...getTagProps({ index })} />
+             ))
+         }*/
+        renderOption={(props, options, { selected }) => {
+          { (options.processtemplateid) % 2 === 0 ? options.status = "/assets/images/awsicons/greenarr.jpg" : options.status = "/assets/images/awsicons/redarr.jpg" }
+
+          return (
+            <li {...props}>
               <Box
                 component={DoneIcon}
                 sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
@@ -116,15 +121,14 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
               />
               <Box
                 sx={{
-                  width: 17, height: 17, mr: '5px', ml: '-2px',
                   flexGrow: 1,
                   '& span': {
                     color:
-                      theme.palette.mode === 'light' ? '#586069' : '#8b949e',
+                      theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
                   },
                 }}
               >
-                {steps.steptemplateid}
+                <Avatar src={options.icon} alt="I" />
                 <br />
 
               </Box>
@@ -137,11 +141,10 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
                   },
                 }}
               >
-                <Avatar src={steps.icon} alt="I" />
+                <Avatar src={options.status} alt="I" />
                 <br />
 
               </Box>
-
 
               <Box
                 sx={{
@@ -152,23 +155,11 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
                   },
                 }}
               >
-                {steps.name}
+                {options.name}
                 <br />
 
               </Box>
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  '& span': {
-                    color:
-                      theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
-                  },
-                }}
-              >
-                <Avatar src={steps.status} alt="I" />
-                <br />
 
-              </Box>
               <Box
                 component={CloseIcon}
                 sx={{ opacity: 0.6, width: 18, height: 18 }}
@@ -177,10 +168,32 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
                 }}
               />
             </li>
-            <Select sx={{ opacity: 0.6, minWidth: 120, height: 50 }}
+          )
+        }
+        }
+
+        renderInput={(params) => (
+          <Stack direction="row" spacing={2} height="50"><TextField
+            {...params}
+            autoFocus
+            placeholder="Processes"
+          /* onKeyDown={(e) => {
+             if (
+               e.key === "Enter" &&
+               options.findIndex((o) => o.name === inputValue) === -1
+             ) {
+  
+               setOptions((o) => o.concat({ name: inputValue, icon: "/assets/images/awsicons/quicksight.png" }));
+             }
+           }}*/
+          />
+
+            <Select sx={{ opacity: 0.6, width: 120, height: 50 }}
               labelId="demo-simple-select-required-label"
               id="demo-simple-select-required"
-            //value={}
+              placeholder="Seq*"
+              lable="Sequence"
+            //value={value}
 
             // onChange={handleChange}
             >
@@ -191,28 +204,16 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
               <MenuItem value={2}>2</MenuItem>
               <MenuItem value={3}>3</MenuItem>
             </Select>
+
+
           </Stack>
-        )
-      }
+        )}
+      />
 
-      }
 
-      renderInput={(params) => (
-        <TextField
-          {...params}
 
-          placeholder="Steps"
-        /*onKeyDown={(e) => {
-          if (
-            e.key === "Enter" &&
-            steps.findIndex((o) => o.name === inputValue) === -1
-          ) {
 
-            setSteps((o) => o.concat({ name: inputValue, icon: "/assets/images/awsicons/quicksight.png" }));
-          }
-        }}*/
-        />
-      )}
-    />
+      <h4>Add the Steps for the selected process.</h4>
+    </>
   );
 }

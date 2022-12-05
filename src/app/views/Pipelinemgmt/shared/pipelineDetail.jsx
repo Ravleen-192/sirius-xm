@@ -56,7 +56,7 @@ export default function ControlledExpansionPanels(product, productid) {
             aria-controls="panel1bh-content"
           >
             <Heading>{step.id} </Heading>
-            <SecondaryHeading>{step.desc}</SecondaryHeading>
+            <SecondaryHeading>{step.name}</SecondaryHeading>
           </AccordionSummary>
 
           {step.steps.map((st, index) => {
@@ -83,7 +83,7 @@ export default function ControlledExpansionPanels(product, productid) {
                     <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
                       <Box display="flex" alignItems="left">
 
-                        <Paragraph>{st.desc}</Paragraph>
+                        <Paragraph>{st.description}</Paragraph>
 
                       </Box>
                     </TableCell>

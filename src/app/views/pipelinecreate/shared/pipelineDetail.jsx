@@ -49,14 +49,14 @@ export default function ControlledExpansionPanels(product, productid) {
     <Box width="100%">
       {product.productList.product.map((step, index) => {
 
-        return (<Accordion expanded={expanded === step.id} onChange={handleChange(step.id)}>
+        return (<Accordion expanded={expanded === step.steptemplateid} onChange={handleChange(step.steptemplateid)}>
           <AccordionSummary
             id="panel1bh-header"
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
           >
-            <Heading>{step.id} </Heading>
-            <SecondaryHeading>{step.desc}</SecondaryHeading>
+            <Heading>{step.processtemplateid} </Heading>
+            <SecondaryHeading>{step.name}</SecondaryHeading>
           </AccordionSummary>
 
           {step.steps.map((st, index) => {
@@ -65,7 +65,7 @@ export default function ControlledExpansionPanels(product, productid) {
               <ProductTable>
 
                 <TableBody>
-                  <TableRow key={st.id} hover>
+                  <TableRow key={st.steptemplateid} hover>
                     <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
                       <Avatar src={st.icon} />
                     </TableCell>
@@ -77,13 +77,13 @@ export default function ControlledExpansionPanels(product, productid) {
 
                       </Box>
                     </TableCell>
-                    <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                    {/* <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
                       <Avatar src={st.status} />
-                    </TableCell>
+            </TableCell>*/}
                     <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
                       <Box display="flex" alignItems="left">
 
-                        <Paragraph>{st.desc}</Paragraph>
+                        <Paragraph>{st.description}</Paragraph>
 
                       </Box>
                     </TableCell>

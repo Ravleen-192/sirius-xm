@@ -11,7 +11,7 @@ import {
   TableCell,
 
   TableRow,
-  useTheme,
+
 } from '@mui/material';
 import { Paragraph } from 'app/components/Typography';
 import React from 'react';
@@ -36,21 +36,20 @@ const ProductTable = styled(Table)(() => ({
 
 
 const Pipelinetable = (props) => {
-  //const productList = props.pipelineData;
+  const productList = props.pipelineData;
   const pipelineID = props.pipelineID;
   const [prodsel, setprodsel] = useState('');
   const [isActive, setActive] = useState('');
   const [prod, setprod] = useState([]);
 
-  console.log("productList", productList)
+  console.log("productList[0]", productList[0])
 
   console.log("pipelineData id", pipelineID)
   const showDetail = (product, productid, i) => {
-
-    if (i === isActive)
-      setActive('');
-    else setActive(i);
-    setprodsel({ productid });
+    if (prodsel === '')
+      setprodsel({ productid });
+    else
+      setprodsel('');
     setprod({ product });
 
   };
@@ -59,8 +58,9 @@ const Pipelinetable = (props) => {
       <Box overflow="auto">
         <ProductTable>
           <TableBody>
-            {productList.map((product, nkey) => {
+            {productList && productList.map((product, nkey) => {
               console.log("product", product)
+              console.log("product.processes", product.processes)
               return (<> <TableRow key={nkey} hover selected onClick={() => showDetail(product.processes, pipelineID, pipelineID)}>
                 <TableCell align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
                   {pipelineID}
@@ -78,22 +78,22 @@ const Pipelinetable = (props) => {
                         </Box>
                       </TableCell>
                       <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={process.id} />
+                        <Avatar src={process.status} />
                       </TableCell>
                     </>
                   );
                 })}
                 <TableCell sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
                   <IconButton>
-                    {isActive === product.id ?
+                    {(prodsel !== '') ?
                       <Icon color="primary">expand_less</Icon> :
                       <Icon color="primary">expand_more</Icon>}
                   </IconButton>
                 </TableCell>
               </TableRow>
                 {
-                  (prodsel !== '' && isActive === product.id) ?
-                    <TableRow key={product.id} >
+                  (prodsel !== '') ?
+                    <TableRow key={product.processtemplateid} >
                       <TableCell sx={{ px: 0, justifyContent: 'center', backgroundColor: 'rgba(9, 182, 109, 0.15)' }} colSpan={36}>
                         <PipelineDetail productList={prod} productid={prodsel} /></TableCell></TableRow>
                     : null
@@ -106,7 +106,7 @@ const Pipelinetable = (props) => {
     </Card>
   );
 };
-
+/*
 const productList = [{
   "id": "",
   "processes": [{
@@ -162,6 +162,6 @@ const productList = [{
     }]
   }]
 }];
-
+*/
 
 export default Pipelinetable;

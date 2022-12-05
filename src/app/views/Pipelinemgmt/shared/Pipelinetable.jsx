@@ -14,9 +14,10 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { Paragraph } from 'app/components/Typography';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PipelineDetail from './pipelineDetail';
 
 const CardHeader = styled(Box)(() => ({
@@ -58,7 +59,8 @@ const Small = styled('small')(({ bgcolor }) => ({
   boxShadow: '0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24)',
 }));
 
-const Pipelinetable = () => {
+const Pipelinetable = (props) => {
+  const [productList, setproductList] = useState(props.productList);
   const [prodsel, setprodsel] = useState('');
   const [isActive, setActive] = useState('');
   const [prod, setprod] = useState([]);
@@ -66,6 +68,11 @@ const Pipelinetable = () => {
   const bgError = palette.error.main;
   const bgPrimary = palette.primary.main;
   const bgSecondary = palette.secondary.main;
+
+  useEffect(() => {
+    console.log("productList ", productList);
+  }, [productList]);
+
   const toggleActive = (i) => {
 
     if (i === isActive)
@@ -82,19 +89,20 @@ const Pipelinetable = () => {
     setprod({ product });
 
   };
+
   return (
     <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
       <Box overflow="auto">
         <ProductTable>
 
           <TableBody>
-            {productList.map((product, nkey) => {
-              console.log("product.id")
+            {productList && productList.map((product, nkey) => {
+
               console.log(product.id)
               console.log("isActive")
               console.log(isActive)
               return (<> <TableRow key={product.id} hover selected style={
-                isActive === product.id ? { background: 'rgba(9, 182, 109, 0.15)' } : null} onClick={() => showDetail(product.processes, product.id, product.id)}>
+                isActive === product.processtemplateid ? { background: 'rgba(9, 182, 109, 0.15)' } : null} onClick={() => showDetail(product.processes, product.processtemplateid, product.processtemplateid)}>
                 <TableCell key={product.id} align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
                   {product.id}
                 </TableCell>
@@ -103,14 +111,14 @@ const Pipelinetable = () => {
 
                   return (
                     <>
-                      <TableCell key={process.id} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                      <TableCell key={process.processtemplateid} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
                         <Avatar src={product.processes[index].icon} />
                       </TableCell>
 
                       <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
                         <Box display="flex" alignItems="left">
 
-                          <Paragraph>{product.processes[index].desc}</Paragraph>
+                          <Paragraph>{product.processes[index].name}</Paragraph>
 
                         </Box>
                       </TableCell>
@@ -121,10 +129,17 @@ const Pipelinetable = () => {
                     </>
                   );
                 })}
+                <TableCell sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
+                  {console.log("product", product)}
+                  <IconButton ><Link className="link" to='/pipelineupdate/default' state={{ product: { product } }}>
 
+                    <Icon color="primary">transform</Icon>
+                  </Link>
+                  </IconButton>
+                </TableCell>
                 <TableCell sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
                   <IconButton>
-                    {isActive === product.id ?
+                    {isActive === product.processtemplateid ?
                       <Icon color="primary">expand_less</Icon> :
                       <Icon color="primary">expand_more</Icon>}
                   </IconButton>
@@ -132,7 +147,7 @@ const Pipelinetable = () => {
               </TableRow>
                 {
 
-                  (prodsel !== '' && isActive === product.id) ?
+                  (prodsel !== '' && isActive === product.processtemplateid) ?
 
                     <TableRow >
                       <TableCell sx={{ px: 0, justifyContent: 'center', backgroundColor: 'rgba(9, 182, 109, 0.15)' }} colSpan={36}>
@@ -152,7 +167,7 @@ const Pipelinetable = () => {
   );
 };
 
-const productList = [
+/*const productList = [
   {
     "id": "#4933",
     "processes": [
@@ -274,7 +289,7 @@ const productList = [
 
 
 ];
-/*
+
  [ {
     id:'#4933',
     imgUrl: '/assets/images/awsicons/Onprem.png',

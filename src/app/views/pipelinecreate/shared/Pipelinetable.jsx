@@ -46,11 +46,10 @@ const Pipelinetable = (props) => {
 
   console.log("pipelineData id", pipelineID)
   const showDetail = (product, productid, i) => {
-
-    if (i === isActive)
-      setActive('');
-    else setActive(i);
-    setprodsel({ productid });
+    if (prodsel === '')
+      setprodsel({ productid });
+    else
+      setprodsel('');
     setprod({ product });
 
   };
@@ -79,22 +78,22 @@ const Pipelinetable = (props) => {
                         </Box>
                       </TableCell>
                       <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={process.id} />
+                        <Avatar src={process.status} />
                       </TableCell>
                     </>
                   );
                 })}
                 <TableCell sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
                   <IconButton>
-                    {isActive === product.id ?
+                    {(prodsel !== '') ?
                       <Icon color="primary">expand_less</Icon> :
                       <Icon color="primary">expand_more</Icon>}
                   </IconButton>
                 </TableCell>
               </TableRow>
                 {
-                  (prodsel !== '' && isActive === product.id) ?
-                    <TableRow key={product.id} >
+                  (prodsel !== '') ?
+                    <TableRow key={product.processtemplateid} >
                       <TableCell sx={{ px: 0, justifyContent: 'center', backgroundColor: 'rgba(9, 182, 109, 0.15)' }} colSpan={36}>
                         <PipelineDetail productList={prod} productid={prodsel} /></TableCell></TableRow>
                     : null

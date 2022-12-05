@@ -16,7 +16,6 @@ const getStepsURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/
 const createPipelineURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/create-pipeline";
 
 
-
 const steps = ['Process1 and Steps', 'Process2 and Steps', 'Process3 and Steps', 'Process4 and Steps', 'Review and Create a pipleline'];
 
 
@@ -40,9 +39,10 @@ const PlCreate = () => {
       //id: "",
       processes: []
     }
-  ]
-  );
-  const [pipelineData, setpipelineData] = useState({});
+  ]);
+  const [pipelineData, setpipelineData] = useState([
+
+  ]);
 
   const AddtoPipeline = () => {
 
@@ -125,7 +125,6 @@ const PlCreate = () => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title: 'React POST Request Example' })
   };
-  /*
   var cpOptions = {
     method: 'POST',
     redirect: 'follow',
@@ -137,41 +136,11 @@ const PlCreate = () => {
     /* fetch(createPipelineURL, cpOptions)
        .then(resultc => {
          console.log(resultc);
-       })*
+       })*/
 
     console.log("jPipelineData", jPipelineData);
   }, [bcreatePipeline]);
-*/
-  const createPipelines = async (jPipelineData) => {
-    console.log("createPipelines")
-    var requestOptions = {
-      method: 'POST',
-      redirect: 'follow',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(jPipelineData)
-    };
 
-    var urlstr = 'https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/create-pipeline'
-    var url = new URL(urlstr)
-
-    try {
-      fetch(url, requestOptions)
-        .then((res) => res.json())
-        .then((jPipelineData) => {
-          console.log(jPipelineData)
-          setbceatePipeline('false')
-        });
-    } catch (error) {
-      console.log("error", error)
-      setbceatePipeline('false')
-    }
-  }
-
-  useEffect(() => {
-    if (bcreatePipeline === 'true')
-      createPipelines(jPipelineData);
-    console.log("bcreatePipeline", bcreatePipeline)
-  }, [bcreatePipeline]);
   const createPipeline = () => {
     setbceatePipeline('true');
   };
@@ -182,16 +151,9 @@ const PlCreate = () => {
   useEffect(() => {
 
     setpipelineData(state);
-    // setJpipelineData(JSON.stringify(state));
-    console.log("pipelinedata ", pipelineData);
+    setJpipelineData(JSON.stringify(state));
+    console.log("pipelinedata ", state);
   }, [state]);
-  useEffect(() => {
-    if (pipelineData) {
-      var strpipeline = pipelineData[0];
-      setJpipelineData(strpipeline);
-    }
-
-  }, [pipelineData]);
 
 
   const totalSteps = () => {
@@ -267,22 +229,21 @@ const PlCreate = () => {
     }
   };
 
-
   const handleReset = () => {
     setActiveStep(0);
-    setActiveProcess(null);
+    setActiveProcess({});
     setbceatePipeline('false');
-    setpipelineData(null);
+    setprocess1({});
+    setprocess2({});
+    setprocess3({});
+    setprocess4({});
+    setpipelineData({});
     setpUid("");
     setJpipelineData("");
+    setActiveProcess({});
     setCompleted({});
-    setprocessData({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
-    setprocess1({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
-    setprocess2({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
-    setprocess3({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
-    setprocess4({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
-
   };
+
   console.log("process1", process1)
   return (
     <Box sx={{ width: '100%', mt: 2 }}>
