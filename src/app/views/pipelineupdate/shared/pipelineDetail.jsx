@@ -8,6 +8,7 @@ import {
   TableRow,
 
 } from '@mui/material';
+import Divider from '@mui/material/Divider';
 import { Paragraph } from 'app/components/Typography';
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -22,6 +23,8 @@ const Heading = styled(Typography)(({ theme }) => ({
 }));
 const ProductTable = styled(Table)(() => ({
   minWidth: 400,
+  width: '100%',
+
   whiteSpace: 'pre',
   '& small': {
     width: 50,
@@ -48,24 +51,27 @@ export default function ControlledExpansionPanels(product, productid) {
   return (
     <Box width="100%">
       {product.productList.product.map((step, index) => {
-
-        return (<Accordion expanded={expanded === step.steptemplateid} onChange={handleChange(step.steptemplateid)}>
+        console.log("step", step)
+        return (<Accordion expanded={expanded === step.id} onChange={handleChange(step.id)}>
           <AccordionSummary
             id="panel1bh-header"
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
           >
-            <Heading>{step.processtemplateid} </Heading>
-            <SecondaryHeading>{step.name}</SecondaryHeading>
+            <Heading><Avatar src={step.icon} /></Heading>
+
+            <SecondaryHeading>{step.name} </SecondaryHeading>
+            <Divider />
           </AccordionSummary>
 
           {step.steps.map((st, index) => {
 
             return (<AccordionDetails>
+              <Divider />
               <ProductTable>
 
                 <TableBody>
-                  <TableRow key={st.steptemplateid} hover>
+                  <TableRow key={st.id} hover>
                     <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
                       <Avatar src={st.icon} />
                     </TableCell>
@@ -77,9 +83,9 @@ export default function ControlledExpansionPanels(product, productid) {
 
                       </Box>
                     </TableCell>
-                    {/* <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                    <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
                       <Avatar src={st.status} />
-            </TableCell>*/}
+                    </TableCell>
                     <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
                       <Box display="flex" alignItems="left">
 
@@ -92,6 +98,7 @@ export default function ControlledExpansionPanels(product, productid) {
 
                 </TableBody>
               </ProductTable>
+              <Divider />
             </AccordionDetails>);
 
           })}

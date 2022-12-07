@@ -1,17 +1,12 @@
-import { ForkRight } from "@mui/icons-material";
-import { DatePicker } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import {
   Button,
-  Checkbox,
-  FormControlLabel,
+
   Grid,
   Icon,
-  Radio,
-  RadioGroup,
+
   styled,
 } from "@mui/material";
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
 import { Span } from "app/components/Typography";
 import { useEffect, useState } from "react";
 import { TextValidator, ValidatorForm } from "react-material-ui-form-validator";
@@ -45,23 +40,23 @@ const SimpleForm = ({ setPipelinename, Pipelinename, setbNameConfirmed, bNameCon
   };
   const handleReset = (event) => {
     event.persist();
-    setState({})
     setbNameConfirmed('false')
-    setPipelinename(null)
+    setPipelinename('')
   };
-
-
-
   return (
     <div>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
         <Grid container spacing={6}>
           <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+            <Button hover variant="outlined" sx={{ mb: 2 }}>
+              <AccountTreeTwoToneIcon />
+            </Button>
             <TextField
               type="text"
+
               name="pipelineName"
               id="standard-basic"
-              value={state || ""}
+              value={Pipelinename || ''}
               onChange={(event, newValue) => {
                 setState(event.target.value);
                 setPipelinename(event.target.value)

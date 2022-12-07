@@ -108,7 +108,7 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
         }
         console.log("filtered", filtered)
         setSelectedSteps(newValue)
-        return (AddProcessData(newValue, null, 'stepsData'))
+        return (AddProcessData(filtered, null, 'stepsData'))
       }}
       getOptionLabel={(step) => step.name}
       renderOption={(props, steps, { selected }) => {
@@ -230,3 +230,118 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
     />
   );
 }
+{ /*PopperComponent={PopperComponent}*/
+/*renderTags={(value, getTagProps) =>
+    value.map((option, index) => (
+        <Chip variant="outlined" label={Array.isArray(option) ? option.name : option}  {...getTagProps({ index })} />
+    ))
+}*//*
+ {/*options={steps}
+
+      noOptionsText="No Option available."
+      multiple
+      fullWidth
+      autoFocus
+      defaultValue={selectedSteps}
+      getOptionLabel={(step) => step.name}
+      /*inputValue={inputValue}
+      onInputChange={(event, newInputValue) => {
+        setInputValue(newInputValue);
+      }}
+      name='stepsData'
+      onChange={(event, newValue) => {
+        console.log("Onchange", newValue)
+        setSelectedSteps(newValue)
+        return (AddProcessData(newValue, null, 'stepsData'))
+      }}
+    disableCloseOnSelect
+    
+
+
+<Stack direction="row" spacing={2} width="100%" height="50" >
+            <li {...props} sx={{ height: 50, width: '80%' }}>
+              <Box
+                component={DoneIcon}
+                sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
+                style={{
+                  visibility: selected ? 'visible' : 'hidden',
+                }}
+              />
+              <Box
+                sx={{
+                  width: 17, height: 17, mr: '5px', ml: '-2px',
+                  flexGrow: 1,
+                  '& span': {
+                    color:
+                      theme.palette.mode === 'light' ? '#586069' : '#8b949e',
+                  },
+                }}
+              >
+                {tempstepid}
+                <br />
+
+              </Box>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  '& span': {
+                    color:
+                      theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
+                  },
+                }}
+              >
+                <Avatar src={steps.icon} alt="I" />
+                <br />
+
+              </Box>
+
+
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  '& span': {
+                    color:
+                      theme.palette.mode === 'light' ? '#586069' : '#8b949e',
+                  },
+                }}
+              >
+                {steps.name}
+                <br />
+
+              </Box>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  '& span': {
+                    color:
+                      theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
+                  },
+                }}
+              >
+                <Avatar src={steps.status} alt="I" />
+                <br />
+
+              </Box>
+              <Box
+                component={CloseIcon}
+                sx={{ opacity: 0.6, width: 18, height: 18 }}
+                style={{
+                  visibility: selected ? 'visible' : 'hidden',
+                }}
+              />
+            </li>
+            <Select sx={{ opacity: 0.6, minWidth: 120, height: 50 }}
+              labelId="demo-simple-select-required-label"
+              id="demo-simple-select-required"
+            //value={}
+
+            // onChange={handleChange}
+            >
+              <MenuItem value="">
+                <em>Sequence</em>
+              </MenuItem>
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+            </Select>
+          </Stack>*/}

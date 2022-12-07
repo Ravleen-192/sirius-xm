@@ -1,15 +1,10 @@
-import { ForkRight } from "@mui/icons-material";
-import { DatePicker } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
+
 import {
   Button,
-  Checkbox,
-  FormControlLabel,
+
   Grid,
   Icon,
-  Radio,
-  RadioGroup,
+
   styled,
 } from "@mui/material";
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
@@ -46,13 +41,10 @@ const SimpleForm = ({ setPipelinename, Pipelinename, setbNameConfirmed, bNameCon
   };
   const handleReset = (event) => {
     event.persist();
-    setState({})
+    setState('')
     setbNameConfirmed('false')
     setPipelinename('')
   };
-
-
-
   return (
     <div>
       <ValidatorForm onSubmit={handleSubmit} onError={() => null}>

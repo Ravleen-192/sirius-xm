@@ -92,7 +92,7 @@ export default function AddProcess({ AddProcessData, LoadProcessData, process, p
         getOptionLabel={(option) => option.name}
         value={value}
         name='processData'
-        onChange={(event, newValue) => AddProcessData(newValue, null, 'processData')}
+        onChange={(event, newValue) => { AddProcessData(newValue, null, 'processData'); setValue(newValue); }}
 
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
