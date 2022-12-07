@@ -11,39 +11,49 @@ import Typography from '@mui/material/Typography';
 import AddProcess from './shared/AddProcess';
 import AddSteps from './shared/AddSteps';
 import Pipelinetable from './shared/Pipelinetable';
+import { SimpleCard } from "app/components";
+import SimpleForm from "./shared/SimpleForm";
+
 const getPocessURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/get-process-templates";
 const getStepsURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/get-step-templates";
 const createPipelineURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/create-pipeline";
-
-
-
-const steps = ['Process1 and Steps', 'Process2 and Steps', 'Process3 and Steps', 'Process4 and Steps', 'Review and Create a pipleline'];
-
+const initSteps = ['Create Pipeline', 'Add Process', 'Add Process', 'Add Process', 'Add Process', 'Review and Create a pipleline'];
 
 const PlCreate = () => {
+  const [steps, setSteps] = useState(initSteps);
   const [preOptions, setpreOptions] = useState(null);
   const [preSteps, setpreSteps] = useState(null);
   const [activeStep, setActiveStep] = useState(0);
   const [activeProcess, setActiveProcess] = useState({});
   const [completed, setCompleted] = useState({});
+  const [bNameConfirmed, setbNameConfirmed] = useState('false');
   const [processData, setprocessData] = useState({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
   const [process1, setprocess1] = useState({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
   const [process2, setprocess2] = useState({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
   const [process3, setprocess3] = useState({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
   const [process4, setprocess4] = useState({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
   const [bcreatePipeline, setbceatePipeline] = useState('false');
-
-  const [pUid, setpUid] = useState('');
   const [jPipelineData, setJpipelineData] = useState("");
+
   const [state, setState] = useState([
     {
-      //id: "",
+      name: null,
       processes: []
     }
   ]
   );
   const [pipelineData, setpipelineData] = useState({});
-
+  const changeStepLabel = (index, name) => {
+    const nextLabels = steps.map((c, i) => {
+      if (i === index) {
+        // Increment the clicked counter
+        c = name;
+      }
+      return c;
+    });
+    console.log("nextLabels", nextLabels)
+    setSteps(nextLabels);
+  };
   const AddtoPipeline = () => {
 
     setState((prev) => [
@@ -51,6 +61,22 @@ const PlCreate = () => {
       { ...prev[0], processes: [...prev[0].processes, { processtemplateid: processData.processtemplateid, name: processData.name, icon: processData.icon, status: processData.status, steps: processData.steps }] }
     ]);
   };
+  const setPipelinename = (value) => {
+    console.log("set pipeline name called")
+    setState((prev) => [
+      ...prev.filter((a, i) => i !== 0),
+      { ...prev[0], name: value }
+    ]);
+  };
+
+  useEffect(() => {
+    console.log("state[0].name", state[0].name)
+  }, [state], [state[0].name]);
+
+  useEffect(() => {
+    console.log("steps", steps)
+  }, [steps]);
+
   const AddProcessData = (field) => (event, value, selectedKey) => {
 
     let data = { ...processData };
@@ -69,24 +95,11 @@ const PlCreate = () => {
       }
     console.log("data", data)
     setprocessData(data)
-    if (activeStep === 0) { setprocess1(data) }
-    else if (activeStep === 1) { setprocess2(data) }
-    else if (activeStep === 2) { setprocess3(data) }
-    else if (activeStep === 3) { setprocess4(data) }
+    if (activeStep === 1) { setprocess1(data) }
+    else if (activeStep === 2) { setprocess2(data) }
+    else if (activeStep === 3) { setprocess3(data) }
+    else if (activeStep === 4) { setprocess4(data) }
   };
-
-  const createpipleineID = () => {
-    const unique_id = uuid();
-    const small_id = unique_id.slice(0, 8);
-
-    setpUid(small_id)
-
-  };
-  ///dont touch
-  useEffect(() => {
-    //setState({ id: pUid });
-
-  }, [pUid]);
 
   useEffect(() => {
     axios.post(getPocessURL, requestOptions)
@@ -125,25 +138,9 @@ const PlCreate = () => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title: 'React POST Request Example' })
   };
-  /*
-  var cpOptions = {
-    method: 'POST',
-    redirect: 'follow',
-    headers: { 'Content-Type': 'application/json' },
-    body: jPipelineData
-  };
-  useEffect(() => {
 
-    /* fetch(createPipelineURL, cpOptions)
-       .then(resultc => {
-         console.log(resultc);
-       })*
-
-    console.log("jPipelineData", jPipelineData);
-  }, [bcreatePipeline]);
-*/
   const createPipelines = async (jPipelineData) => {
-    console.log("createPipelines")
+    console.log("createPipelines jPipelineData", JSON.stringify(jPipelineData))
     var requestOptions = {
       method: 'POST',
       redirect: 'follow',
@@ -151,19 +148,18 @@ const PlCreate = () => {
       body: JSON.stringify(jPipelineData)
     };
 
-    var urlstr = 'https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/create-pipeline'
-    var url = new URL(urlstr)
+    var url = new URL(createPipelineURL)
 
     try {
       fetch(url, requestOptions)
         .then((res) => res.json())
         .then((jPipelineData) => {
           console.log(jPipelineData)
-          setbceatePipeline('false')
+
         });
     } catch (error) {
       console.log("error", error)
-      setbceatePipeline('false')
+
     }
   }
 
@@ -172,6 +168,7 @@ const PlCreate = () => {
       createPipelines(jPipelineData);
     console.log("bcreatePipeline", bcreatePipeline)
   }, [bcreatePipeline]);
+
   const createPipeline = () => {
     setbceatePipeline('true');
   };
@@ -183,13 +180,14 @@ const PlCreate = () => {
 
     setpipelineData(state);
     // setJpipelineData(JSON.stringify(state));
-    console.log("pipelinedata ", pipelineData);
+    console.log("state ", state);
   }, [state]);
   useEffect(() => {
     if (pipelineData) {
       var strpipeline = pipelineData[0];
       setJpipelineData(strpipeline);
     }
+    console.log("pipelineData ", pipelineData);
 
   }, [pipelineData]);
 
@@ -216,55 +214,60 @@ const PlCreate = () => {
   };
 
   const handleBack = () => {
-    if (activeStep === 0) { setActiveProcess(process1) }
-    else if (activeStep === 1) { setActiveProcess(process2) }
-    else if (activeStep === 2) { setActiveProcess(process3) }
-    else if (activeStep === 3) { setActiveProcess(process4) }
+    if (activeStep === 1) { setActiveProcess(process1) }
+    else if (activeStep === 2) { setActiveProcess(process2) }
+    else if (activeStep === 3) { setActiveProcess(process3) }
+    else if (activeStep === 4) { setActiveProcess(process4) }
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleStep = (step) => () => {
-    if (activeStep === 0) { setActiveProcess(process1) }
-    else if (activeStep === 1) { setActiveProcess(process2) }
-    else if (activeStep === 2) { setActiveProcess(process3) }
-    else if (activeStep === 3) { setActiveProcess(process4) }
+    if (activeStep === 1) { setActiveProcess(process1) }
+    else if (activeStep === 2) { setActiveProcess(process2) }
+    else if (activeStep === 3) { setActiveProcess(process3) }
+    else if (activeStep === 4) { setActiveProcess(process4) }
     const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-        // find the first step that has been completed
-        steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
+      /* isLastStep() && !allStepsCompleted()
+         ? // It's the last step, but not all steps have been completed,
+         // find the first step that has been completed
+         steps.findIndex((step, i) => !(i in completed))
+         : */
+      activeStep + 1;
     setActiveStep(newActiveStep);
     setActiveStep(step);
+  };
+  const handleFinish = () => {
+    // if (completedSteps() === totalSteps()) {
+    if (activeStep === totalSteps() - 1) {
+      createPipeline();
+    }
   };
 
   const handleComplete = () => {
     const newCompleted = completed;
+    console.log("HandleComplete state[0].name", state[0].name)
+    if (processData.name !== '')
+      AddtoPipeline();
+    if (!completed[activeStep]) {
+      if (activeStep === 0 && (state[0].name != null || state[0].name !== ''))
+        changeStepLabel(activeStep, state[0].name);
 
-    if (activeStep === 0) {
-      createpipleineID();
+      if (activeStep === 1) { setActiveProcess(process1); changeStepLabel(activeStep, process1.name); }
+      else if (activeStep === 2) { setActiveProcess(process2); changeStepLabel(activeStep, process2.name); }
+      else if (activeStep === 3) { setActiveProcess(process3); changeStepLabel(activeStep, process3.name); }
+      else if (activeStep === 4) { setActiveProcess(process4); changeStepLabel(activeStep, process4.name); }
     }
-
-    AddtoPipeline();
-    if (activeStep === 0) { setActiveProcess(process1) }
-    else if (activeStep === 1) { setActiveProcess(process2) }
-    else if (activeStep === 2) { setActiveProcess(process3) }
-    else if (activeStep === 3) { setActiveProcess(process4) }
-
     const newActiveStep =
-      isLastStep() && !allStepsCompleted()
+     /* isLastStep() && !allStepsCompleted()
         ? // It's the last step, but not all steps have been completed,
         // find the first step that has been completed
         steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
+        : */activeStep + 1;
     setActiveStep(newActiveStep);
     //handleNext();
     newCompleted[activeStep] = true;
     setCompleted(newCompleted);
-    if (completedSteps() === totalSteps()) {
-      console.log("creating pipeline")
-      createPipeline();
-    }
+    setprocessData({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
   };
 
 
@@ -273,9 +276,9 @@ const PlCreate = () => {
     setActiveProcess(null);
     setbceatePipeline('false');
     setpipelineData(null);
-    setpUid("");
     setJpipelineData("");
     setCompleted({});
+    setbNameConfirmed('false');
     setprocessData({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
     setprocess1({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
     setprocess2({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
@@ -283,20 +286,24 @@ const PlCreate = () => {
     setprocess4({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
 
   };
-  console.log("process1", process1)
+
   return (
     <Box sx={{ width: '100%', mt: 2 }}>
       <Stepper nonLinear activeStep={activeStep}>
-        {steps.map((label, index) => (
-          <Step key={label} completed={completed[index]}>
-            <StepButton color="inherit" onClick={handleStep(index)}>
-              {label}
-            </StepButton>
-          </Step>
-        ))}
+        {steps.map((label, index) => {
+          return (
+            <Step completed={completed[index]}>
+              <StepButton color="inherit" onClick={handleStep(index)}>
+                {label}
+              </StepButton>
+            </Step>
+          );
+        })}
       </Stepper>
+
       <div>
-        {allStepsCompleted() ? (
+
+        {bcreatePipeline === 'true' ? (
           <Fragment>
             {/*<Typography sx={{ mt: 2, mb: 1 }}>
               All steps completed - you&apos;re finished
@@ -314,11 +321,12 @@ const PlCreate = () => {
               <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
                 {/*Step {activeStep + 1}*/}
 
-                {activeStep === 0 ? <><AddProcess key={'process1'} process={process1} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process1Steps"} selsteps={process1.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
-                  : activeStep === 1 ? <><AddProcess key={'process2'} process={process2} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process2Steps"} selsteps={process2.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
-                    : activeStep === 2 ? <><AddProcess key={'process3'} process={process3} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process3Steps"} selsteps={process3.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
-                      : activeStep === 3 ? <><AddProcess key={'process4'} process={process4} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process4Steps"} selsteps={process4.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /> </>
-                        : <Pipelinetable pipelineData={pipelineData} pipelineID={pUid} />}
+                {activeStep === 0 ? <SimpleCard title=""><SimpleForm setPipelinename={setPipelinename} Pipelinename={state[0].name} setbNameConfirmed={setbNameConfirmed} bNameConfirmed={bNameConfirmed} /></SimpleCard> :
+                  activeStep === 1 ? <><AddProcess key={'process1'} process={process1} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process1Steps"} selsteps={process1.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
+                    : activeStep === 2 ? <><AddProcess key={'process2'} process={process2} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process2Steps"} selsteps={process2.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
+                      : activeStep === 3 ? <><AddProcess key={'process3'} process={process3} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process3Steps"} selsteps={process3.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
+                        : activeStep === 4 ? <><AddProcess key={'process4'} process={process4} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process4Steps"} selsteps={process4.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /> </>
+                          : <Pipelinetable pipelineData={pipelineData} pipelineName={state[0].name} />}
 
               </Typography> : <>Loading...</>}
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -337,19 +345,17 @@ const PlCreate = () => {
               <Typography variant="caption" sx={{ display: 'inline-block', color: 'red', mt: '20' }}>
                     Step {activeStep + 1} already completed
                 </Typography>*/}
-              {activeStep !== steps.length &&
-                (completed[activeStep] ? (
+              {activeStep !== totalSteps() - 1 ?
+                <Button onClick={handleComplete}>
+                  Complete Step
+                </Button> : null}
+              {activeStep === totalSteps() - 1 ?
+                <Button onClick={handleFinish}>
+                  Finish
+                </Button> : null
 
-                  <Button sx={{ color: 'red' }}>
-                    Step {activeStep + 1} already completed
-                  </Button>
-                ) : (
-                  <Button onClick={handleComplete}>
-                    {completedSteps() === totalSteps() - 1
-                      ? 'Finish'
-                      : 'Complete Step'}
-                  </Button>
-                ))}
+              }
+
             </Box>
           </Fragment>
         )}

@@ -6,13 +6,14 @@ import {
   IconButton,
 
   styled,
-  Table,
+  Table, Button,
   TableBody,
   TableCell,
 
   TableRow,
 
 } from '@mui/material';
+import Divider from '@mui/material/Divider';
 import { Paragraph } from 'app/components/Typography';
 import React from 'react';
 import { useState } from 'react';
@@ -37,14 +38,15 @@ const ProductTable = styled(Table)(() => ({
 
 const Pipelinetable = (props) => {
   const productList = props.pipelineData;
-  const pipelineID = props.pipelineID;
+  const pipelineName = props.pipelineName;
   const [prodsel, setprodsel] = useState('');
   const [isActive, setActive] = useState('');
   const [prod, setprod] = useState([]);
+  console.log("productList", productList)
+  console.log("pipelineName", pipelineName)
 
-  console.log("productList[0]", productList[0])
 
-  console.log("pipelineData id", pipelineID)
+
   const showDetail = (product, productid, i) => {
     if (prodsel === '')
       setprodsel({ productid });
@@ -56,52 +58,75 @@ const Pipelinetable = (props) => {
   return (
     <Card elevation={3} sx={{ pt: '20px', mb: 3 }}>
       <Box overflow="auto">
-        <ProductTable>
-          <TableBody>
-            {productList && productList.map((product, nkey) => {
-              console.log("product", product)
-              console.log("product.processes", product.processes)
-              return (<> <TableRow key={nkey} hover selected onClick={() => showDetail(product.processes, pipelineID, pipelineID)}>
-                <TableCell align="left" colSpan={3} sx={{ px: 0, textTransform: 'capitalize' }}>
-                  {pipelineID}
-                </TableCell>
-                {product.processes.map((process, index) => {
-                  console.log("process", process)
-                  return (
-                    <>
-                      <TableCell key={index} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={process.icon} />
+        {productList && productList[0].name && productList[0].processes.length >= 1 ?
+          <><ProductTable>
+            <TableBody>
+              {productList && productList.map((product, nkey) => {
+                return (<>
+                  {(prodsel !== '') ?
+                    <TableRow key={product.id} hover selected style={
+                      isActive === product.processtemplateid ? { background: 'rgba(9, 182, 109, 0.15)' } : null} onClick={() => showDetail(product.processes, product.processtemplateid, product.processtemplateid)}>
+                      <TableCell align="left" colSpan={18} sx={{ px: 0, textTransform: 'capitalize' }}>
+                        <b>Pipeline Name</b>
                       </TableCell>
-                      <TableCell colSpan={4} align="left" sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Box display="flex" alignItems="left">
-                          <Paragraph>{process.name}</Paragraph>
-                        </Box>
+                      <TableCell align="left" colSpan={18} sx={{ px: 0, textTransform: 'capitalize' }}>
+                        <b>{product.name}</b>
                       </TableCell>
+
+                      <TableCell align="right" sx={{ px: 0, justifyContent: 'left' }} colSpan={2}>
+                        <IconButton>
+                          {prodsel !== '' ?
+                            <Icon color="primary">expand_less</Icon> :
+                            <Icon color="primary">expand_more</Icon>}
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                    : <TableRow key={product.id} hover selected style={
+                      prodsel !== '' ? { background: 'rgba(9, 182, 109, 0.15)' } : null} onClick={() => showDetail(product.processes, product.processtemplateid, product.processtemplateid)}>
                       <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                        <Avatar src={process.status} />
+                        {product.id}
                       </TableCell>
-                    </>
-                  );
-                })}
-                <TableCell sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
-                  <IconButton>
-                    {(prodsel !== '') ?
-                      <Icon color="primary">expand_less</Icon> :
-                      <Icon color="primary">expand_more</Icon>}
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-                {
-                  (prodsel !== '') ?
-                    <TableRow key={product.processtemplateid} >
-                      <TableCell sx={{ px: 0, justifyContent: 'center', backgroundColor: 'rgba(9, 182, 109, 0.15)' }} colSpan={36}>
-                        <PipelineDetail productList={prod} productid={prodsel} /></TableCell></TableRow>
-                    : null
-                }
-              </>);
-            })}
-          </TableBody>
-        </ProductTable>
+                      <TableCell align="left" colSpan={3} sx={{ px: 0 }}>
+                        {product.name}
+                      </TableCell>
+                      {product.processes && product.processes.map((process, index) => {
+                        console.log("process", process)
+                        return (
+                          <>
+                            <TableCell key={index} align="center" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                              <Avatar src={process.icon} />
+                            </TableCell>
+                            <TableCell colSpan={4} align="center" sx={{ px: 0, textTransform: 'capitalize' }}>
+                              <Box display="flex" alignItems="left">
+                                <Paragraph>{process.name}</Paragraph>
+                              </Box>
+                            </TableCell>
+                            <TableCell align="center" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                              <Avatar src={process.status} />
+                            </TableCell>
+                          </>
+                        );
+                      })}
+                      <TableCell align="right" sx={{ px: 0, justifyContent: 'right' }} colSpan={1}>
+                        <IconButton>
+                          {(prodsel !== '') ?
+                            <Icon color="primary">expand_less</Icon> :
+                            <Icon color="primary">expand_more</Icon>}
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>}
+                  {
+                    (prodsel !== '') ?
+                      <TableRow key={product.processtemplateid} sx={{ width: '100%', px: 0, justifyContent: 'center', backgroundColor: 'rgba(9, 182, 109, 0.15)' }}>
+                        <TableCell sx={{ px: 0, justifyContent: 'right', backgroundColor: 'rgba(9, 182, 109, 0.15)' }} colSpan={38}>
+                          <PipelineDetail productList={prod} productid={prodsel} /></TableCell></TableRow>
+                      : null
+                  }
+                </>);
+              })}
+            </TableBody>
+          </ProductTable><Divider /></> : <>
+            <Button sx={{ color: 'red' }}>Please enter the pipeline name and atleast one process to create a pipeline.</Button><Divider /></>}
       </Box>
     </Card>
   );

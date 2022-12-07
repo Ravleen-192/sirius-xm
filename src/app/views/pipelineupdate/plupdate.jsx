@@ -193,15 +193,6 @@ const PlUpdate = () => {
 
   };
 
-  const updatepipleineID = () => {
-    const unique_id = uuid();
-    const small_id = unique_id.slice(0, 8);
-
-    //setpUid(small_id)
-
-  };
-  ///dont touch
-
   useEffect(() => {
     console.log("pipeline", pipeline)
     setpUid(pipeline.product.id)
@@ -357,10 +348,6 @@ const PlUpdate = () => {
 
   const handleComplete = () => {
     const newCompleted = completed;
-
-    if (activeStep === 0) {
-      updatepipleineID();
-    }
 
     AddtoPipeline();
     if (activeStep === 0) { setActiveProcess(process1) }
