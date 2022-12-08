@@ -3,9 +3,9 @@ import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
 import { useTheme, styled } from '@mui/material/styles';
-
+import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
+import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
@@ -62,6 +62,7 @@ export default function AddProcess({ AddProcessData, process, preOptions }) {
   const [options, setOptions] = useState(preOptions);
   const [inputValue, setInputValue] = useState("");
   const [value, setValue] = useState(process.name);
+  const [sequence, setSequence] = useState("Seq*")
 
   const theme = useTheme();
   console.log("process name", process.name)
@@ -77,6 +78,9 @@ export default function AddProcess({ AddProcessData, process, preOptions }) {
 
     console.log("options ", options);
   }, [options]);
+  const handleSelectChange = (event) => {
+    setSequence(event.target.value)
+  };
   return (
     <>
 
@@ -99,7 +103,7 @@ export default function AddProcess({ AddProcessData, process, preOptions }) {
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        disableCloseOnSelect
+        //disableCloseOnSelect
         PopperComponent={PopperComponent}
 
 
@@ -110,6 +114,8 @@ export default function AddProcess({ AddProcessData, process, preOptions }) {
          }*/
         renderOption={(props, options, { selected }) => {
           { (options.processtemplateid) % 2 === 0 ? options.status = "/assets/images/awsicons/greenarr.jpg" : options.status = "/assets/images/awsicons/redarr.jpg" }
+
+
 
           return (
             <li {...props}>
@@ -133,7 +139,7 @@ export default function AddProcess({ AddProcessData, process, preOptions }) {
                 <br />
 
               </Box>
-              <Box
+              {/*} <Box
                 sx={{
                   flexGrow: 1,
                   '& span': {
@@ -145,7 +151,7 @@ export default function AddProcess({ AddProcessData, process, preOptions }) {
                 <Avatar src={options.status} alt="I" />
                 <br />
 
-              </Box>
+              </Box>*/}
 
               <Box
                 sx={{
@@ -188,29 +194,29 @@ export default function AddProcess({ AddProcessData, process, preOptions }) {
              }
            }}*/
           />
+            <Box sx={{ minWidth: 120, height: '120px' }}>
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel sx={{ minWidth: 120, minHeight: 30 }} >Seq *</InputLabel>
+                <Select
 
-            <Select sx={{ opacity: 0.6, width: 120, height: 50 }}
-              labelId="demo-simple-select-required-label"
-              id="demo-simple-select-required"
-              placeholder="Seq*"
-              lable="Sequence"
-            //value={value}
-
-            // onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>Sequence</em>
-              </MenuItem>
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-            </Select>
+                  value={sequence}
+                  label="Age"
+                  onChange={handleSelectChange}
+                >
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
 
 
           </Stack>
-        )}
+        )
+        }
       />
-      <h4>Add the Steps for the selected process.</h4>
+      < h4 > Add the Steps for the selected process.</h4 >
     </>
   );
 }

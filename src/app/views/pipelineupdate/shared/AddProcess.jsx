@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
 import { useTheme, styled } from '@mui/material/styles';
 
+import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
 
 import Select from '@mui/material/Select';
 import CloseIcon from '@mui/icons-material/Close';
@@ -62,6 +64,7 @@ export default function AddProcess({ AddProcessData, LoadProcessData, process, p
   const [options, setOptions] = useState(preOptions);
   const [inputValue, setInputValue] = useState("");
   const [value, setValue] = useState(process.name);
+  const [sequence, setSequence] = useState("Seq*")
 
   const theme = useTheme();
   console.log("process name", process.name)
@@ -77,13 +80,17 @@ export default function AddProcess({ AddProcessData, LoadProcessData, process, p
 
     console.log("options ", options);
   }, [options]);
+
+  const handleSelectChange = (event) => {
+    setSequence(event.target.value)
+  };
   return (
     <>
       <h4>Select the process.</h4>
       <Autocomplete
         options={options}
         freeSolo
-        //autoFocus
+        autoFocus
         //noOptionsText="No option available"
         //multiple
         //open
@@ -98,7 +105,7 @@ export default function AddProcess({ AddProcessData, LoadProcessData, process, p
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        disableCloseOnSelect
+        //disableCloseOnSelect
         PopperComponent={PopperComponent}
 
 
@@ -132,7 +139,7 @@ export default function AddProcess({ AddProcessData, LoadProcessData, process, p
                 <br />
 
               </Box>
-              <Box
+              {/* <Box
                 sx={{
                   flexGrow: 1,
                   '& span': {
@@ -144,7 +151,7 @@ export default function AddProcess({ AddProcessData, LoadProcessData, process, p
                 <Avatar src={options.status} alt="I" />
                 <br />
 
-              </Box>
+              </Box>*/}
 
               <Box
                 sx={{
@@ -188,23 +195,22 @@ export default function AddProcess({ AddProcessData, LoadProcessData, process, p
            }}*/
           />
 
-            <Select sx={{ opacity: 0.6, width: 120, height: 50 }}
-              labelId="demo-simple-select-required-label"
-              id="demo-simple-select-required"
-              placeholder="Seq*"
-              lable="Sequence"
-            //value={value}
+            <Box sx={{ minWidth: 120, height: '120px' }}>
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel sx={{ minWidth: 120, minHeight: 30 }} >Seq *</InputLabel>
+                <Select
 
-            // onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>Sequence</em>
-              </MenuItem>
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-            </Select>
-
+                  value={sequence}
+                  label="Age"
+                  onChange={handleSelectChange}
+                >
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
 
           </Stack>
         )}

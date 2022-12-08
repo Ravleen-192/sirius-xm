@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import Stack from '@mui/material/Stack';
 import { useTheme, styled } from '@mui/material/styles';
 
+import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
 
 import Select from '@mui/material/Select';
 
@@ -66,6 +68,8 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
   const [inputValue, setInputValue] = useState({});
   const [steps, setSteps] = useState(preSteps);
   const [selectedSteps, setSelectedSteps] = useState(selsteps);
+  const [sequence, setSequence] = useState("Seq*")
+
   const theme = useTheme();
   useEffect(() => {
 
@@ -73,6 +77,10 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
   useEffect(() => {
     console.log("steps from AddSteps", steps);
   }, [steps]);
+
+  const handleSelectChange = (event) => {
+    setSequence(event.target.value)
+  };
   return (
     <Autocomplete
       options={steps}
@@ -105,58 +113,48 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
         const tempstepid = `${steps.steptemplateid}`;
         steps.steptemplateid = tempstepid;
         return (
-          <Stack direction="row" spacing={2} width="100%" height="50" >
-            <li {...props} sx={{ height: 50, width: '80%' }}>
-              <Box
-                component={DoneIcon}
-                sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
-                style={{
-                  visibility: selected ? 'visible' : 'hidden',
-                }}
-              />
-              <Box
-                sx={{
-                  width: 17, height: 17, mr: '5px', ml: '-2px',
-                  flexGrow: 1,
-                  '& span': {
-                    color:
-                      theme.palette.mode === 'light' ? '#586069' : '#8b949e',
-                  },
-                }}
-              >
-                {steps.steptemplateid}
-                <br />
 
-              </Box>
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  '& span': {
-                    color:
-                      theme.palette.mode === 'dark' ? '#586069' : '#8b949e',
-                  },
-                }}
-              >
-                <Avatar src={steps.icon} alt="I" />
-                <br />
+          <li {...props} sx={{ width: '100%', height: 50 }}>
+            <Box
+              component={DoneIcon}
+              sx={{ width: 17, height: 17, mr: '5px', ml: '-2px' }}
+              style={{
+                visibility: selected ? 'visible' : 'hidden',
+              }}
+            />
+            <Box
+              sx={{
+                width: 17, height: 17, mr: '5px', ml: '10px',
+                flexGrow: 1,
+                '& span': {
+                  color:
+                    theme.palette.mode === 'light' ? '#586069' : '#8b949e',
+                },
+              }}
+            >
+              {steps.steptemplateid}
+              {"           "}
 
-              </Box>
+              <Avatar src={steps.icon} alt="I" />
 
 
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  '& span': {
-                    color:
-                      theme.palette.mode === 'light' ? '#586069' : '#8b949e',
-                  },
-                }}
-              >
-                {steps.name}
-                <br />
+            </Box>
 
-              </Box>
-              <Box
+
+            <Box
+              sx={{
+                flexGrow: 1,
+                '& span': {
+                  color:
+                    theme.palette.mode === 'light' ? '#586069' : '#8b949e',
+                },
+              }}
+            >
+              {steps.name}
+              <br />
+
+            </Box>
+            {/*<Box
                 sx={{
                   flexGrow: 1,
                   '& span': {
@@ -168,30 +166,34 @@ export default function AddSteps({ AddProcessData, selsteps, preSteps }) {
                 <Avatar src={steps.status} alt="I" />
                 <br />
 
-              </Box>
-              <Box
-                component={CloseIcon}
-                sx={{ opacity: 0.6, width: 18, height: 18 }}
-                style={{
-                  visibility: selected ? 'visible' : 'hidden',
-                }}
-              />
-            </li>
-            <Select sx={{ opacity: 0.6, minWidth: 120, height: 50 }}
-              labelId="demo-simple-select-required-label"
-              id="demo-simple-select-required"
-            //value={}
+              </Box>*/}
 
-            // onChange={handleChange}
-            >
-              <MenuItem value="">
-                <em>Sequence</em>
-              </MenuItem>
-              <MenuItem value={1}>1</MenuItem>
-              <MenuItem value={2}>2</MenuItem>
-              <MenuItem value={3}>3</MenuItem>
-            </Select>
-          </Stack>
+            <Box sx={{ minWidth: 120, height: '120px' }}>
+              <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel sx={{ minWidth: 120, minHeight: 30 }} >Seq *</InputLabel>
+                <Select
+
+                  //value={sequence}
+                  label="Age"
+                  onChange={handleSelectChange}
+                >
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+            <Box
+              component={CloseIcon}
+              sx={{ opacity: 0.6, width: 18, height: 18 }}
+              style={{
+                visibility: selected ? 'visible' : 'hidden',
+              }}
+            />
+          </li>
+
+
         )
       }
 

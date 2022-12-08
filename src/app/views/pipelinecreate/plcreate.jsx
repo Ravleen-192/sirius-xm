@@ -13,7 +13,8 @@ import AddSteps from './shared/AddSteps';
 import Pipelinetable from './shared/Pipelinetable';
 import { SimpleCard } from "app/components";
 import SimpleForm from "./shared/SimpleForm";
-
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 const getPocessURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/get-process-templates";
 const getStepsURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/get-step-templates";
 const createPipelineURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/create-pipeline";
@@ -34,6 +35,8 @@ const PlCreate = () => {
   const [process4, setprocess4] = useState({ processtemplateid: '', name: '', icon: '', status: '', steps: [] });
   const [bcreatePipeline, setbceatePipeline] = useState('false');
   const [jPipelineData, setJpipelineData] = useState("");
+  const [errMsg, seterrMsg] = useState("");
+  const [succMsg, setsuccMsg] = useState("");
 
   const [state, setState] = useState([
     {
@@ -54,6 +57,7 @@ const PlCreate = () => {
     console.log("nextLabels", nextLabels)
     setSteps(nextLabels);
   };
+
   const AddtoPipeline = () => {
 
     setState((prev) => [
@@ -67,6 +71,7 @@ const PlCreate = () => {
       ...prev.filter((a, i) => i !== 0),
       { ...prev[0], name: value }
     ]);
+
   };
 
   useEffect(() => {
@@ -157,9 +162,10 @@ const PlCreate = () => {
           console.log(jPipelineData)
 
         });
+      setsuccMsg("Pipeline Created!")
     } catch (error) {
       console.log("error", error)
-
+      seterrMsg(error);
     }
   }
 
@@ -237,10 +243,10 @@ const PlCreate = () => {
     setActiveStep(step);
   };
   const handleFinish = () => {
-    // if (completedSteps() === totalSteps()) {
-    if (activeStep === totalSteps() - 1) {
+    if (state[0].name != null && state[0].name !== '' && pipelineData[0].processes.length >= 1)
       createPipeline();
-    }
+    else seterrMsg("Please add Pipeline Name and atleast one process to create a pipeline.")
+
   };
 
   const handleComplete = () => {
@@ -330,7 +336,16 @@ const PlCreate = () => {
       </Stepper>
 
       <div>
-
+        {errMsg !== "" ?
+          <Alert severity="error" onClose={() => { seterrMsg("") }}>
+            <AlertTitle>Error</AlertTitle>
+            <strong>{errMsg}</strong>
+          </Alert> : null}
+        {succMsg !== "" ?
+          <Alert severity="success" onClose={() => { setsuccMsg("") }}>
+            <AlertTitle>Success</AlertTitle>
+            <strong>{succMsg}</strong>
+          </Alert> : null}
         {bcreatePipeline === 'true' ? (
           <Fragment>
             {/*<Typography sx={{ mt: 2, mb: 1 }}>
@@ -349,7 +364,7 @@ const PlCreate = () => {
               <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
                 {/*Step {activeStep + 1}*/}
 
-                {activeStep === 0 ? <SimpleCard title=""><SimpleForm setPipelinename={setPipelinename} Pipelinename={state[0].name} setbNameConfirmed={setbNameConfirmed} bNameConfirmed={bNameConfirmed} /></SimpleCard> :
+                {activeStep === 0 ? <SimpleCard title="Create a Pipeline"><SimpleForm setPipelinename={setPipelinename} Pipelinename={state[0].name} setbNameConfirmed={setbNameConfirmed} bNameConfirmed={bNameConfirmed} /></SimpleCard> :
                   activeStep === 1 ? <><AddProcess key={'process1'} process={process1} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process1Steps"} selsteps={process1.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
                     : activeStep === 2 ? <><AddProcess key={'process2'} process={process2} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process2Steps"} selsteps={process2.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
                       : activeStep === 3 ? <><AddProcess key={'process3'} process={process3} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process3Steps"} selsteps={process3.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
@@ -358,14 +373,15 @@ const PlCreate = () => {
 
               </Typography> : <>Loading...</>}
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
+              {activeStep === 0 ?
+                null : <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>}
               <Box sx={{ flex: '1 1 auto' }} />
               {/*  <Button onClick={handleNext} sx={{ mr: 1 }}>
                 Next
@@ -373,10 +389,18 @@ const PlCreate = () => {
               <Typography variant="caption" sx={{ display: 'inline-block', color: 'red', mt: '20' }}>
                     Step {activeStep + 1} already completed
                 </Typography>*/}
+
               {activeStep !== totalSteps() - 1 ?
-                <Button onClick={handleComplete}>
-                  Complete Step
-                </Button> : null}
+                <>{(activeStep > 1) ?
+                  <><Button onClick={handleComplete}>
+                    Continue to Add Process
+                  </Button><Button onClick={handleFinish}>
+                      Finish
+                    </Button> </> : <>{(activeStep === totalSteps() - 2) ? <Button onClick={handleFinish}>
+                      Finish
+                    </Button> : <Button onClick={handleComplete}>
+                      Continue to Add Process
+                    </Button>}</>} </> : null}
               {activeStep === totalSteps() - 1 && state[0].name != null && state[0].name !== '' && pipelineData[0].processes.length >= 1 ?
                 <><Button onClick={handleReset}>
                   Reset

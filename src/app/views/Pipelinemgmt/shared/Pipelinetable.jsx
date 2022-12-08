@@ -101,7 +101,7 @@ const Pipelinetable = (props) => {
           console.log("isActive", isActive)
           console.log("prodsel", prodsel)
 
-          return (<><ProductTable>
+          return (<><Divider /><ProductTable>
 
             <TableBody>
               {(prodsel !== '' && isActive === product.id) ?
@@ -132,15 +132,15 @@ const Pipelinetable = (props) => {
                 : <TableRow key={product.id} hover selected style={
                   isActive === product.id ? { background: 'rgba(9, 182, 109, 0.15)' } : null} onClick={() => showDetail(product.processes, product.id, product.id)}>
                   <TableCell align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
-                    {product.id}
+                    <b>{product.id}</b>
                   </TableCell>
-                  <TableCell align="left" colSpan={3} sx={{ px: 0 }}>
-                    {product.name}
+                  <TableCell align="left" colSpan={8} sx={{ px: 0, textTransform: 'capitalize' }}>
+                    <strong>{product.name}</strong>
                   </TableCell>
                   {product.processes.map((process, index) => {
                     return (
                       <>
-                        <TableCell align="center" key={process.processtemplateid} align="left" colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
+                        <TableCell align="center" key={process.processtemplateid} colSpan={2} sx={{ px: 0, textTransform: 'capitalize' }}>
                           <Avatar src={product.processes[index].icon} />
                         </TableCell>
 
@@ -160,18 +160,16 @@ const Pipelinetable = (props) => {
                   })}
                   <TableCell align="center" sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
                     {console.log("product", product)}
-                    <IconButton ><Link className="link" to='/pipelineupdate/default' state={{ product: { product } }}>
+                    <Link className="link" to='/pipelineupdate/default' state={{ product: { product } }}>
 
                       <Icon color="primary">transform</Icon>
                     </Link>
-                    </IconButton>
+
                   </TableCell>
                   <TableCell align="left" sx={{ px: 0, justifyContent: 'left' }} colSpan={1}>
-                    <IconButton>
-                      {isActive === product.id ?
-                        <Icon color="primary">expand_less</Icon> :
-                        <Icon color="primary">expand_more</Icon>}
-                    </IconButton>
+                    {isActive === product.id ?
+                      <Icon color="primary">expand_less</Icon> :
+                      <Icon color="primary">expand_more</Icon>}
                   </TableCell>
                 </TableRow>}
               {

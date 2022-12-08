@@ -1,7 +1,6 @@
 import { React, useState, useEffect, Fragment } from 'react';
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -14,8 +13,8 @@ import AddSteps from './shared/AddSteps';
 import Pipelinetable from './shared/Pipelinetable';
 import { SimpleCard } from "app/components";
 import SimpleForm from "./shared/SimpleForm";
-import { LocationDisabledTwoTone } from '@mui/icons-material';
-
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 const getPocessURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/get-process-templates";
 const getStepsURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/get-step-templates";
 const updatePipelineURL = "https://3uiqfn8244.execute-api.us-east-1.amazonaws.com/dev/update-pipeline";
@@ -53,6 +52,8 @@ const PlUpdate = () => {
 
   const [pUid, setpUid] = useState('');
   const [jPipelineData, setJpipelineData] = useState("");
+  const [errMsg, seterrMsg] = useState("");
+  const [succMsg, setsuccMsg] = useState("");
   const [state, setState] = useState([
     {
       id: "",
@@ -84,11 +85,67 @@ const PlUpdate = () => {
   useEffect(() => {
     console.log("state[0].name", state[0].name)
   }, [state], [state[0].name]);
+
   useEffect(() => {
     console.log("steps", steps)
   }, [steps]);
+  /*
+    useEffect(() => {
+      if ((state[0].name != null || state[0].name !== ''))
+        changeStepLabel(0, state[0].name);
+    }, [state], [state[0].name]);
+  
+    useEffect(() => {
+      if ((pipeline.product.processes[0].name != null || pipeline.product.processes[0].name !== ''))
+        changeStepLabel(1, pipeline.product.processes[0].name);
+    }, [pipeline.product.processes[0].name]);
+  
+    useEffect(() => {
+      if ((pipeline.product.processes[1].name != null || pipeline.product.processes[1].name !== ''))
+        changeStepLabel(2, pipeline.product.processes[1].name);
+    }, [pipeline.product.processes[1].name]);
+  
+    useEffect(() => {
+      if ((pipeline.product.processes[2].name != null || pipeline.product.processes[2].name !== ''))
+        changeStepLabel(3, pipeline.product.processes[2].name);
+    }, [pipeline.product.processes[2].name]);
+  
+    useEffect(() => {
+      if ((pipeline.product.processes[3].name != null || pipeline.product.processes[3].name !== ''))
+        changeStepLabel(4, pipeline.product.processes[3].name);
+    }, [pipeline.product.processes[3].name]);
+  */
+
+  useEffect(() => {
+    for (var i = 0; i < pipeline.product.processes.length; i++) {
+
+      switch (i) {
+
+        case 0: setprocess1(pipeline.product.processes[0]);
+          console.log("process1", pipeline.product.processes[0]);
+          break;
+        case 1: setprocess2(pipeline.product.processes[1]);
+          console.log("process1", pipeline.product.processes[1])
+          break;
+        case 2:
+          setprocess3(pipeline.product.processes[2]);
+          console.log("process1", pipeline.product.processes[2])
+          break;
+        case 3:
+          setprocess4(pipeline.product.processes[3]);
+          break;
+        default:
+          break;
+      }
+
+    }
+  }, [pipeline.product], [pipeline.product.processes]);
+
+
+  /////////////
 
   const loadPipeline = () => {
+
     if (pipeline && pipeline.product) {
       setpUid(pipeline.product.id);
 
@@ -96,40 +153,16 @@ const PlUpdate = () => {
         ...prev.filter((a, i) => i !== 0),
         { ...prev[0], name: pipeline.product.name }
       ]);
-      if ((pipeline.product.name != null || pipeline.product.name !== ''))
-        changeStepLabel(0, pipeline.product.name);
       setState((prev) => [
         ...prev.filter((a, i) => i !== 0),
         { ...prev[0], id: pipeline.product.id }
       ]);
-      for (var i = 0; i < pipeline.product.processes.length; i++) {
 
-        switch (i) {
-          case 0: setprocess1(pipeline.product.processes[0]);
-            changeStepLabel(1, pipeline.product.processes[0].name);
-            break;
-          case 1: setprocess2(pipeline.product.processes[1]);
-            changeStepLabel(2, pipeline.product.processes[1].name);
-            break;
-          case 2:
-            setprocess3(pipeline.product.processes[2]);
-            changeStepLabel(3, pipeline.product.processes[2].name);
-            break;
-          case 3:
-            setprocess4(pipeline.product.processes[3]);
-            changeStepLabel(4, pipeline.product.processes[3].name);
-            break;
-          default:
-            break;
-        }
-      }
     }
   }
   useEffect(() => {
-
     console.log("pipeline", pipeline)
     loadPipeline();
-
   }, [pipeline]);
 
   useEffect(() => {
@@ -321,14 +354,17 @@ const PlUpdate = () => {
 
     try {
       fetch(url, requestOptions)
-        .then((res) => res.json())
+        .then((res) =>
+          res.json()
+        )
         .then((jPipelineData) => {
           console.log(jPipelineData)
-          setbupdatePipeline('false')
+
         });
+      setsuccMsg("Pipeline Created!")
     } catch (error) {
       console.log("error", error)
-      setbupdatePipeline('false')
+      seterrMsg(error);
     }
   }
 
@@ -404,9 +440,11 @@ const PlUpdate = () => {
   };
   const handleFinish = () => {
     // if (completedSteps() === totalSteps()) {
-    if (activeStep === totalSteps() - 1) {
+    if (state[0].name != null && state[0].name !== '' && pipelineData[0].processes.length >= 1)
       updatePipeline();
-    }
+    else seterrMsg("Please Add Pipeline Name and atleast Add/Update one process to update a pipeline.")
+
+
   };
   const handleComplete = () => {
     const newCompleted = completed;
@@ -496,7 +534,16 @@ const PlUpdate = () => {
         ))}
       </Stepper>
       <div>
-
+        {errMsg !== "" ?
+          <Alert severity="error" onClose={() => { seterrMsg("") }}>
+            <AlertTitle>Error</AlertTitle>
+            <strong>{errMsg}</strong>
+          </Alert> : null}
+        {succMsg !== "" ?
+          <Alert severity="success" onClose={() => { setsuccMsg("") }}>
+            <AlertTitle>Success</AlertTitle>
+            <strong>{succMsg}</strong>
+          </Alert> : null}
         {bupdatePipeline === 'true' ? (
           <Fragment>
             {/*<Typography sx={{ mt: 2, mb: 1 }}>
@@ -515,7 +562,7 @@ const PlUpdate = () => {
               <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
                 {/*Step {activeStep + 1}*/}
 
-                {activeStep === 0 ? <SimpleCard title=""><SimpleForm setPipelinename={setPipelinename} Pipelinename={state[0].name} setbNameConfirmed={setbNameConfirmed} bNameConfirmed={bNameConfirmed} /></SimpleCard> :
+                {activeStep === 0 ? <SimpleCard title="Update the Pipeline"><SimpleForm setPipelinename={setPipelinename} Pipelinename={state[0].name} setbNameConfirmed={setbNameConfirmed} bNameConfirmed={bNameConfirmed} /></SimpleCard> :
                   activeStep === 1 ? <><AddProcess key={'process1'} LoadProcessData={LoadProcessData} process={process1} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process1Steps"} selsteps={process1.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
                     : activeStep === 2 ? <><AddProcess key={'process2'} LoadProcessData={LoadProcessData} process={process2} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process2Steps"} selsteps={process2.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
                       : activeStep === 3 ? <><AddProcess key={'process3'} LoadProcessData={LoadProcessData} process={process3} AddProcessData={AddProcessData('processData')} preOptions={preOptions} /> <AddSteps key={"process3Steps"} selsteps={process3.steps} AddProcessData={AddProcessData('stepsData')} preSteps={preSteps} /></>
@@ -524,14 +571,15 @@ const PlUpdate = () => {
 
               </Typography> : <>Loading...</>}
             <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
+              {activeStep === 0 ?
+                null : <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>}
               <Box sx={{ flex: '1 1 auto' }} />
               {/*  <Button onClick={handleNext} sx={{ mr: 1 }}>
                 Next
@@ -539,11 +587,19 @@ const PlUpdate = () => {
               <Typography variant="caption" sx={{ display: 'inline-block', color: 'red', mt: '20' }}>
                     Step {activeStep + 1} already completed
                 </Typography>*/}
+
               {activeStep !== totalSteps() - 1 ?
-                <Button onClick={handleComplete}>
-                  Complete Step
-                </Button> : null}
-              {activeStep === totalSteps() - 1 && pUid !== '' && state[0].name != null && state[0].name !== '' && pipelineData[0].processes.length >= 1 ?
+                <>{(activeStep > 1) ?
+                  <><Button onClick={handleComplete}>
+                    Continue to Update/Add Process
+                  </Button><Button onClick={handleFinish}>
+                      Finish
+                    </Button> </> : <>{(activeStep === totalSteps() - 2) ? <Button onClick={handleFinish}>
+                      Finish
+                    </Button> : <Button onClick={handleComplete}>
+                      Continue to Update/Add Process
+                    </Button>}</>} </> : null}
+              {activeStep === totalSteps() - 1 && state[0].name != null && state[0].name !== '' && pipelineData[0].processes.length >= 1 ?
                 <><Button onClick={handleReset}>
                   Reset
                 </Button>
